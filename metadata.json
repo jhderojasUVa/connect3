@@ -1,0 +1,6 @@
+{
+  "name": "Connect3",
+  "identifier": "com.jhderojasuva.connect3",
+  "version": "1.0.0",
+  "icon": "./static/icon.png"
+}
