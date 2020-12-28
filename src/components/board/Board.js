@@ -110,7 +110,6 @@ export class Board extends Lightning.Component {
   }
 
   _handleLeft() {
-    console.log('L')
     if (this._selectorIndex % 8 !==0) {
       this._selectorIndex--
     }
@@ -118,7 +117,7 @@ export class Board extends Lightning.Component {
   }
 
   _handleRight() {
-    if (this._selectorIndex % 8 !== 8) {
+    if (this._selectorIndex % 8 !== 7) {
       this._selectorIndex++
     }
     this.moveSelector(this._selectorIndex)
@@ -139,10 +138,13 @@ export class Board extends Lightning.Component {
   }
 
   moveSelector(index) {
-    console.log(index)
-    this.selector.patch({
-      x: index * SpaceBetween,
-      y: (index % 8) * SpaceBetween
+    let pos = {
+      x: (index % 8) * SpaceBetween,
+      y: 0
+    }
+    this._selector.patch({
+      x: pos.x,
+      y: 0
     })
   }
 }

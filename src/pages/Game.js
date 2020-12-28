@@ -64,4 +64,8 @@ export class GamePage extends Lightning.Component {
       })
       this._music.play()
     }
+
+    _getFocused() {
+      return this.tag('Board')
+    }
 }
