@@ -1,3 +1,5 @@
+// constants used by the game
+
 export const Colors = {
     Green: 0xFF00cc22,
     White: 0xFFeeeeee,

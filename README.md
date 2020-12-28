@@ -1,5 +1,7 @@
 # Connect3
 
+Connect3 is the typical board game that you must connect three items one next to another in order to clean them and let more space to new ones.
+
 ## com.jhderojasuva.connect3
 
 ### Getting started

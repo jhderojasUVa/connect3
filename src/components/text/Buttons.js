@@ -15,6 +15,10 @@ export class ButtonText extends Lightning.Component {
         }
     }
 
+    _build() {
+      this._action = undefined
+    }
+
     _init() {
     }
 
@@ -25,24 +29,40 @@ export class ButtonText extends Lightning.Component {
     }
 
     set title(text) {
-        console.log(text)
         this.tag('ButtonText').text.text = text
     }
 
+    set action(val) {
+      this._action = val
+    }
+
+    get action() {
+      return this._action
+    }
+
     _focus() {
-        console.log('Button Focus')
+      this.alpha = 0.5
+      /*
         this.buttonAnimation = this.animation({
             duration: 1,
             repeat: -1,
-            stopMethod: 'inmediate',
+            stopMethod: 'reverse',
             actions: [
-                { p: 'y', v: {0: -10, 0.5: 0, 1: 10}}
+                { p: 'y', v: {0: 0, 0.3: -10, 0.6: +10, 1: 10}}
             ]
         })
         this.buttonAnimation.start()
+        */
     }
 
     _unfocus() {
+      this.alpha = 1
+      /*
         this.buttonAnimation.stop()
+        */
+    }
+
+    _handleEnter() {
+      this.fireAncestors('$buttonFired', this._action)
     }
 }
