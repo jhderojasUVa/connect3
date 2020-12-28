@@ -1,11 +1,17 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
 
-export class ItemComponent extends Lightning.Component {
+import { Colors, ChipSize } from '../../utils/Styles'
+
+export class Chip extends Lightning.Component {
   static _template() {
     return {
-      w: 20,
-      h: 20,
+      w: ChipSize.w,
+      h: ChipSize.h,
     }
+  }
+
+  _init() {
+    console.log(this)
   }
 
   _setup() {
@@ -33,8 +39,12 @@ export class ItemComponent extends Lightning.Component {
     this.src = Utils.asset(`chips/${val}`)
   }
 
-  set color(val) {
-    this.color = val
+  set chipColor(val) {
+    this.color = Colors[val]
     this.rect = true
+  }
+
+  get chipColor() {
+    return this.color
   }
 }
