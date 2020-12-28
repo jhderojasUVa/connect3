@@ -2,6 +2,7 @@ import { Lightning, Utils } from '@lightningjs/sdk'
 
 import { Colors, SpaceBetween, ChipSize } from '../../utils/Styles'
 import { Chip } from '../items/Chip'
+import { Selector } from '../selector/Selector'
 
 export class Board extends Lightning.Component {
   // 8 x 12 (board)
@@ -16,12 +17,21 @@ export class Board extends Lightning.Component {
 
       },
       Chips: {
+      },
+      Selector: {
+        type: Selector
       }
     }
   }
 
   _build() {
     this._music = undefined
+    this._selectorIndex = 0
+  }
+
+  _init() {
+    this._chips = this.tag('Chips')
+    this._selector = this.tag('Selector')
   }
 
 
@@ -92,11 +102,47 @@ export class Board extends Lightning.Component {
           y: start.y,
           color: chipColor
         },
-        //color: Colors[chipColor],
         rect: true,
         texture: Lightning.Tools.getRoundRect(ChipSize.w, ChipSize.h, 40, 0, 0xffff00ff, true, Colors[chipColor]),
         type: Chip
       }
+    })
+  }
+
+  _handleLeft() {
+    console.log('L')
+    if (this._selectorIndex % 8 !==0) {
+      this._selectorIndex--
+    }
+    this.moveSelector(this._selectorIndex)
+  }
+
+  _handleRight() {
+    if (this._selectorIndex % 8 !== 8) {
+      this._selectorIndex++
+    }
+    this.moveSelector(this._selectorIndex)
+  }
+
+  _handleUp() {
+    if (this._selectorIndex > 8) {
+      this._selectorIndex = this._selectorIndex - 8
+    }
+    this.moveSelector(this._selectorIndex)
+  }
+
+  _handleDown() {
+    if (this._selectorIndex < 96) {
+      this._selectorIndex = this._selectorIndex + 8
+    }
+    this.moveSelector(this._selectorIndex)
+  }
+
+  moveSelector(index) {
+    console.log(index)
+    this.selector.patch({
+      x: index * SpaceBetween,
+      y: (index % 8) * SpaceBetween
     })
   }
 }

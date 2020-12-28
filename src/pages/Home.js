@@ -73,6 +73,7 @@ export class HomePage extends Lightning.Component {
     $buttonFired(event) {
       switch (event.toLowerCase()) {
         case 'play':
+          this._music.stop()
           Router.navigate('game')
         case 'exit':
           // this.application.exit()

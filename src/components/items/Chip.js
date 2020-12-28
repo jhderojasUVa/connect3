@@ -11,7 +11,7 @@ export class Chip extends Lightning.Component {
   }
 
   _init() {
-    console.log(this)
+    //console.log(this)
   }
 
   _setup() {
