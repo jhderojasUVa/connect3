@@ -15,3 +15,5 @@ export const ChipSize = {
   w: 80,
   h: 80,
 }
+
+export const BackgroundHome = 'color-4159037_1920.jpg'
