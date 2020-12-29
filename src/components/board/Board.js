@@ -40,7 +40,8 @@ export class Board extends Lightning.Component {
     this._generateLines(643, SpaceBetween, 'x', this.tag('HorizontalLines'))
     this._generateLines(965, SpaceBetween, 'y', this.tag('VerticalLines'))
     this._generateChips()
-    //this.checkChips()
+
+    this.checkChipsRow()
   }
 
   _generateLines(size, separation, axis, object) {
@@ -87,7 +88,8 @@ export class Board extends Lightning.Component {
 
     this.tag('Chips').children = chips.map((item, index) => {
       // random chip color!
-      const chipColor = Colors[Colors.Index[Math.floor(Math.random() * Colors.Index.length)]]
+      const colorName = Colors.Index[Math.floor(Math.random() * Colors.Index.length)]
+      const chipColor = Colors[colorName]
 
       if (index > 0 && (index % 8) == 0) {
         // new line!
@@ -102,7 +104,7 @@ export class Board extends Lightning.Component {
           index,
           x: index % 8,
           y: start.y,
-          color: chipColor
+          color: colorName
         },
         rect: true,
         texture: Lightning.Tools.getRoundRect(ChipSize.w, ChipSize.h, 40, 0, 0xffff00ff, true, chipColor),
@@ -146,56 +148,73 @@ export class Board extends Lightning.Component {
       y: (index < 8) ? 0 : Math.floor(index / 8) * SpaceBetween
     })
     // check chips
-    this.checkChips()
+    this.checkChipsRow()
   }
 
-  checkChips() {
-    console.log(this.checkNextChip(0, 1, 'x'))
-    console.log(this.tag('Chips').children[1])
-    /*this.tag('Chips').children.forEach((element, index) => {
-      //console.log(element)
-      const currentChip = element.data.index
-      // right
-      let right = this.checkNextChip(currentChip, 1, 'x')
-      // left
-      let left = this.checkNextChip(currentChip, -1, 'x')
-      // top
-      //let top = this.checkNextChip(currentChip, -1, 'y')
-      // bottom
-      //let bottom = this.checkNextChip(currentChip, 1, 'y')
-      //console.log(right)
-      console.log(left)
-    });*/
-  }
-
-  checkNextChip(index, direction, axis) {
-    // direction the number you will sum
-    let nextChip
-    switch (axis) {
-      case 'x':
-        if (direction == 1 && index % 8 < 8) {
-          nextChip = this.tag('Chips').children[index + 1] ? this.tag('Chips').children[index + 1].data : undefined
-          console.log(nextChip)
-        } else if (direction == -1 && index % 8 > 0) {
-          nextChip = this.tag('Chips').children[index - 1] ? this.tag('Chips').children[index - 1].data : undefined
-        } else {
-          nextChip = undefined
-        }
-        break
-      case 'y':
-        if (direction == 1) {
-          nextChip = this.tag('Chips').children[index + 8] ? this.tag('Chips').children[index + 8].data : undefined
-        } else if (direction == -1) {
-          nextChip = this.tag('Chips').children[index - 8] ? this.tag('Chips').children[index - 8].data : undefined
-        } else {
-          nextChip = undefined
-        }
-        break
+  returnXY(index) {
+    // this will return the x, y position of an index
+    // x also a column
+    // y also a row
+    return {
+      x: index % 8,
+      y: Math.floor(index / 8)
     }
-    return nextChip ? nextChip.color : undefined
   }
 
-  clearChips(index, axis) {
+  returnIndex(x, y) {
+    // return the index of an x, y position
+    return (x + 1) * (y + 1)
+  }
 
+  checkChipsCoincidences(minindex = 0, maxindex = 8, coincidences = 0) {
+    const index = minindex % 8 // index translation
+    const nextIndex = minindex + 1
+    // current
+    let currentColor = this.tag('Chips').children[minindex].data.color
+    // next
+    let nextColor
+    if (this.tag('Chips').children[nextIndex] && index <= maxindex) {
+      nextColor = this.tag('Chips').children[nextIndex].data.color
+    } else {
+      nextColor = undefined
+    }
+
+    if (nextIndex < 96) {
+      if (currentColor == nextColor) {
+        // mark them
+        this.tag('Chips').children[minindex].data.clear = true
+        this.checkChipsCoincidences(nextIndex, 8, coincidences + 1)
+      } else {
+        if (coincidences >= 3) {
+          // clear
+          console.log('Clear!')
+          this.clearChips()
+        } else {
+          this.checkChipsCoincidences(nextIndex, 8, 0)
+        }
+      }
+    }
+  }
+
+  checkChipsRow(row = 0) {
+    for (row; row < 12; row++) {
+      this.checkChipsCoincidences(row * 8)
+    }
+  }
+
+  checkChipsColumn(column = 0) {
+    for (column; column < 8; column++) {
+
+    }
+  }
+
+
+  clearChips() {
+    this.tag('Chips').children.forEach((element, index) => {
+      if (element.data.clear == true) {
+        console.log(element.data)
+        element.alpha = 0
+      }
+    })
   }
 }
