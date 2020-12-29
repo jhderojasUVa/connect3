@@ -124,27 +124,24 @@ export class Board extends Lightning.Component {
   }
 
   _handleUp() {
-    if (this._selectorIndex > 8) {
+    if (this._selectorIndex >= 8) {
       this._selectorIndex = this._selectorIndex - 8
     }
     this.moveSelector(this._selectorIndex)
   }
 
   _handleDown() {
-    if (this._selectorIndex < 96) {
+    if (this._selectorIndex < 96 - 8) {
       this._selectorIndex = this._selectorIndex + 8
     }
     this.moveSelector(this._selectorIndex)
   }
 
   moveSelector(index) {
-    let pos = {
-      x: (index % 8) * SpaceBetween,
-      y: 0
-    }
+    // selector movement
     this._selector.patch({
-      x: pos.x,
-      y: 0
+      x: (index % 8) * SpaceBetween,
+      y: (index < 8) ? 0 : Math.floor(index / 8) * SpaceBetween
     })
   }
 }
