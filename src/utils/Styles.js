@@ -17,3 +17,5 @@ export const ChipSize = {
 }
 
 export const BackgroundHome = 'color-4159037_1920.jpg'
+
+export const GameBackgrounds = []

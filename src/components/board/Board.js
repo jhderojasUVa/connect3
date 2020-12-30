@@ -1,7 +1,10 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
+import { Howl, Howler } from 'howler'
 
 import { Colors, SpaceBetween, ChipSize } from '../../utils/Styles'
 import { BOARDSIZE } from '../../utils/Board'
+import { PopSound } from '../../utils/Music'
+
 import { Chip } from '../items/Chip'
 import { Selector } from '../selector/Selector'
 
@@ -28,6 +31,12 @@ export class Board extends Lightning.Component {
   _build() {
     this._music = undefined
     this._selectorIndex = 0
+
+    this._popSound = new Howl({
+      src: [Utils.asset(`sounds/effects/${PopSound}`)], // https://www.playonloop.com/freebies-download/
+      autoplay: true,
+      loop: false,
+  })
   }
 
   _init() {
@@ -43,8 +52,9 @@ export class Board extends Lightning.Component {
     this._generateChips()
 
     this.checkChipsRow()
-    this.checkChipsColumn()
     this.clearChips()
+    //this.checkChipsColumn()
+    //this.clearChips()
   }
 
   _generateLines(size, separation, axis, object) {
@@ -146,7 +156,7 @@ export class Board extends Lightning.Component {
 
   _handleEnter() {
     // debug mode!
-    console.log(this.tag('Chip').children(this._selectorIndex))
+    console.log(this.tag('Chips').children[this._selectorIndex])
   }
 
   moveSelector(index) {
@@ -155,11 +165,11 @@ export class Board extends Lightning.Component {
       x: (index % 8) * SpaceBetween,
       y: (index < 8) ? 0 : Math.floor(index / 8) * SpaceBetween
     })
-    // check chips
+    // check chips & clear
     this.checkChipsRow()
     this.clearChips()
-    this.checkChipsColumn()
-    this.clearChips()
+    //this.checkChipsColumn()
+    //this.clearChips()
   }
 
   returnXY(index) {
@@ -186,7 +196,7 @@ export class Board extends Lightning.Component {
     }
   }
 
-  checkChipsCoincidences(minindex = 0, maxindex = Board.columns, coincidences = 0, axis = 'x') {
+  checkChipsCoincidences(minindex = 0, maxindex = BOARDSIZE.x, coincidences = 0, axis = 'x') {
     let index, nextIndex, nextColor, currentColor
     switch (axis) {
       case 'x':
@@ -196,20 +206,26 @@ export class Board extends Lightning.Component {
         currentColor = this.tag('Chips').children[minindex].data.color
         // next (nextColor)
         nextColor = this.returnColorChip(nextIndex, maxindex)
-        if (nextIndex < BOARDSIZE.index) {
+        if (nextIndex < BOARDSIZE.x) {
           if (currentColor == nextColor) {
             // mark them
             this.markChipAsTmpClear(minindex)
             this.checkChipsCoincidences(nextIndex, 8, coincidences + 1, 'x')
           } else {
             if (coincidences >= 2) {
-              // clear
+              console.log(`OK ${index}/${minindex} = ${currentColor} --- ${nextIndex} = ${nextColor} (${coincidences})`)
+              // put as tmp clear the current one
               this.markChipAsTmpClear(minindex)
+              // mark all clear to real clear chips
               this.markTmpClearChipsAsClear()
-              console.log('Clear X!')
+              // go to the next
+              this.checkChipsCoincidences(nextIndex, BOARDSIZE.x, 0, 'x')
             } else {
+              console.log(`KO ${index}/${minindex} = ${currentColor} --- ${nextIndex} = ${nextColor} (${coincidences})`)
+              // remove old marked as clear
               this.unClearChips()
-              this.checkChipsCoincidences(nextIndex, 8, 0, 'x')
+              // go to the next
+              this.checkChipsCoincidences(nextIndex, BOARDSIZE.x, 0, 'x')
             }
           }
         }
@@ -219,7 +235,7 @@ export class Board extends Lightning.Component {
         currentColor = this.tag('Chips').children[minindex].data.color
         // next (nextColor)
         nextColor = this.returnColorChip(nextIndex, BOARDSIZE.index)
-        console.log( `precoin ${coincidences} >> cu ${minindex}=${currentColor} | next${nextIndex}=${nextColor} ` )
+        //console.log( `precoin ${coincidences} >> cu ${minindex}=${currentColor} | next${nextIndex}=${nextColor} ` )
         if (nextIndex < BOARDSIZE.index - 8) { // end of the board!
           if (currentColor == nextColor) {
             // mark them
@@ -227,15 +243,17 @@ export class Board extends Lightning.Component {
             this.checkChipsCoincidences(nextIndex, Board.index, coincidences + 1, 'y')
           } else {
             if (coincidences >= 2) {
-              // clear the current one
-              //this.tag('Chips').children[minindex].data.tmpclear = true
+              //console.log(`OK ${minindex}=${currentColor} ---- ${nextIndex}=${nextColor} --- ${coincidences}`)
+              // put as tmp clear the current one
               this.markChipAsTmpClear(minindex)
-              console.log('Clear Y!')
               // mark all clear to real clear chips
               this.markTmpClearChipsAsClear()
+              this.checkChipsCoincidences(nextIndex, Board.index, 0, 'y')
             } else {
               // remove old marked as clear chips
+              //console.log(`BAD ${minindex}=${currentColor} ---- ${nextIndex}=${nextColor}`)
               this.unClearChips()
+              // go to the next
               this.checkChipsCoincidences(nextIndex, Board.index, 0, 'y')
             }
           }
@@ -244,15 +262,15 @@ export class Board extends Lightning.Component {
     }
   }
 
-  checkChipsRow(row = 0) {
-    for (row; row < 12; row++) {
-      this.checkChipsCoincidences(row * 8, 8, 0, 'x')
+  checkChipsRow(row = 0, maxrow = 12) {
+    for (row; row < maxrow; row++) {
+      this.checkChipsCoincidences(row * 8, BOARDSIZE.x, 0, 'x')
     }
   }
 
-  checkChipsColumn(column = 0) {
-    for (column; column < 8; column++) {
-      this.checkChipsCoincidences(column, 96, 0, 'y')
+  checkChipsColumn(column = 0, maxcolumn = 8) {
+    for (column; column < maxcolumn; column++) {
+      this.checkChipsCoincidences(column, BOARDSIZE.index, 0, 'y')
     }
   }
 
@@ -278,8 +296,9 @@ export class Board extends Lightning.Component {
     // clear real chips
     this.tag('Chips').children.forEach((element, index) => {
       if (element.data.realclear == true) {
-        console.log(element.data)
+        //console.log(element.data)
         element.color = 0xFF000000
+        this._popSound.play()
         //element.alpha = 0
       }
     })

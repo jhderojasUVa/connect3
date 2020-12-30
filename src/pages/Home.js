@@ -13,9 +13,6 @@ export class HomePage extends Lightning.Component {
         return {
             Background: {
                 x: 0, y: 0, w: 1920, h: 1080,
-                //colorTop: 0xFFffffff,
-                //colorBottom: 0xFFcccccc,
-                //rect: true,
                 scale: 1.3,
                 alpha: 0.8,
                 src: Utils.asset(`images/backgrounds/${BackgroundHome}`)
