@@ -1,7 +1,7 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
 import { Howl, Howler } from 'howler'
 
-import { HornSound } from '../../utils/Music'
+import { HornSound, HarryUp } from '../../utils/Music'
 
 import { Colors } from '../../utils/Styles'
 import { MAX_TIMEBAR } from '../../utils/Board'
@@ -44,10 +44,24 @@ export class TimerBar extends Lightning.Component {
   }
 
   _init() {
+    // lazy!
     this._bar = this.tag('Border')
     this._progress = this.tag('Bar')
 
+    // timmer
     this._timmer = null
+
+    // sounds
+    this._hornSound = new Howl({
+      src: [Utils.asset(`sounds/effects/${HornSound}`)],
+      autoplay: false,
+      loop: false,
+    })
+    this._hurryUp = new Howl({
+      src: [Utils.asset(`sounds/effects/${HarryUp}`)],
+      autoplay: false,
+      loop: false,
+    })
   }
 
   _active() {
@@ -60,17 +74,12 @@ export class TimerBar extends Lightning.Component {
       const newTime = Math.floor(currentTime + (BARSIZE / MAX_TIMEBAR) * 1000)
 
       if (newTime > 250 && newTime < 350) {
+        this._hurryUp.play()
         this._progress.color = Colors.Yellow
-      } else if (newTime > 350 && newTime <= BARSIZE) {
-        console.log(newTime)
+      } else if (newTime > 380 && newTime <= BARSIZE) {
         this._progress.color = Colors.Red
       } else if (newTime >= BARSIZE) {
         this.fireAncestors('$timeEND')
-        this._hornSound = new Howl({
-          src: [Utils.asset(`sounds/effects/${HornSound}`)],
-          autoplay: true,
-          loop: false,
-        })
         this._hornSound.play()
         this.stopTimming()
       }
