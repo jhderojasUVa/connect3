@@ -1,6 +1,7 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
 
 import { Colors, SpaceBetween, ChipSize } from '../../utils/Styles'
+import { BOARDSIZE } from '../../utils/Board'
 import { Chip } from '../items/Chip'
 import { Selector } from '../selector/Selector'
 
@@ -42,6 +43,8 @@ export class Board extends Lightning.Component {
     this._generateChips()
 
     this.checkChipsRow()
+    this.checkChipsColumn()
+    this.clearChips()
   }
 
   _generateLines(size, separation, axis, object) {
@@ -114,7 +117,7 @@ export class Board extends Lightning.Component {
   }
 
   _handleLeft() {
-    if (this._selectorIndex % 8 !==0) {
+    if (this._selectorIndex % 8 !== 0) {
       this._selectorIndex--
     }
     this.moveSelector(this._selectorIndex)
@@ -141,6 +144,11 @@ export class Board extends Lightning.Component {
     this.moveSelector(this._selectorIndex)
   }
 
+  _handleEnter() {
+    // debug mode!
+    console.log(this.tag('Chip').children(this._selectorIndex))
+  }
+
   moveSelector(index) {
     // selector movement
     this._selector.patch({
@@ -149,6 +157,9 @@ export class Board extends Lightning.Component {
     })
     // check chips
     this.checkChipsRow()
+    this.clearChips()
+    this.checkChipsColumn()
+    this.clearChips()
   }
 
   returnXY(index) {
@@ -166,54 +177,110 @@ export class Board extends Lightning.Component {
     return (x + 1) * (y + 1)
   }
 
-  checkChipsCoincidences(minindex = 0, maxindex = 8, coincidences = 0) {
-    const index = minindex % 8 // index translation
-    const nextIndex = minindex + 1
-    // current
-    let currentColor = this.tag('Chips').children[minindex].data.color
-    // next
-    let nextColor
-    if (this.tag('Chips').children[nextIndex] && index <= maxindex) {
-      nextColor = this.tag('Chips').children[nextIndex].data.color
+  returnColorChip(index, maxindex) {
+    // return the color of a chip with certain index (for cheking next chip color)
+    if (this.tag('Chips').children[index] && index <= maxindex) {
+      return this.tag('Chips').children[index].data.color
     } else {
-      nextColor = undefined
+      return undefined
     }
+  }
 
-    if (nextIndex < 96) {
-      if (currentColor == nextColor) {
-        // mark them
-        this.tag('Chips').children[minindex].data.clear = true
-        this.checkChipsCoincidences(nextIndex, 8, coincidences + 1)
-      } else {
-        if (coincidences >= 3) {
-          // clear
-          console.log('Clear!')
-          this.clearChips()
-        } else {
-          this.checkChipsCoincidences(nextIndex, 8, 0)
+  checkChipsCoincidences(minindex = 0, maxindex = Board.columns, coincidences = 0, axis = 'x') {
+    let index, nextIndex, nextColor, currentColor
+    switch (axis) {
+      case 'x':
+        index = minindex % 8 // index translation
+        nextIndex = minindex + 1
+        // current
+        currentColor = this.tag('Chips').children[minindex].data.color
+        // next (nextColor)
+        nextColor = this.returnColorChip(nextIndex, maxindex)
+        if (nextIndex < BOARDSIZE.index) {
+          if (currentColor == nextColor) {
+            // mark them
+            this.markChipAsTmpClear(minindex)
+            this.checkChipsCoincidences(nextIndex, 8, coincidences + 1, 'x')
+          } else {
+            if (coincidences >= 2) {
+              // clear
+              this.markChipAsTmpClear(minindex)
+              this.markTmpClearChipsAsClear()
+              console.log('Clear X!')
+            } else {
+              this.unClearChips()
+              this.checkChipsCoincidences(nextIndex, 8, 0, 'x')
+            }
+          }
         }
-      }
+        break
+      case 'y':
+        nextIndex = minindex + 8
+        currentColor = this.tag('Chips').children[minindex].data.color
+        // next (nextColor)
+        nextColor = this.returnColorChip(nextIndex, BOARDSIZE.index)
+        console.log( `precoin ${coincidences} >> cu ${minindex}=${currentColor} | next${nextIndex}=${nextColor} ` )
+        if (nextIndex < BOARDSIZE.index - 8) { // end of the board!
+          if (currentColor == nextColor) {
+            // mark them
+            this.markChipAsTmpClear(minindex)
+            this.checkChipsCoincidences(nextIndex, Board.index, coincidences + 1, 'y')
+          } else {
+            if (coincidences >= 2) {
+              // clear the current one
+              //this.tag('Chips').children[minindex].data.tmpclear = true
+              this.markChipAsTmpClear(minindex)
+              console.log('Clear Y!')
+              // mark all clear to real clear chips
+              this.markTmpClearChipsAsClear()
+            } else {
+              // remove old marked as clear chips
+              this.unClearChips()
+              this.checkChipsCoincidences(nextIndex, Board.index, 0, 'y')
+            }
+          }
+        }
+        break
     }
   }
 
   checkChipsRow(row = 0) {
     for (row; row < 12; row++) {
-      this.checkChipsCoincidences(row * 8)
+      this.checkChipsCoincidences(row * 8, 8, 0, 'x')
     }
   }
 
   checkChipsColumn(column = 0) {
     for (column; column < 8; column++) {
-
+      this.checkChipsCoincidences(column, 96, 0, 'y')
     }
   }
 
+  markChipAsTmpClear(index) {
+    this.tag('Chips').children[index].data.tmpclear = true
+  }
+
+  markTmpClearChipsAsClear() {
+    this.tag('Chips').children.forEach((element) => {
+      if (element.data.tmpclear == true) {
+        element.data.realclear = true
+      }
+    })
+  }
+
+  unClearChips() {
+    this.tag('Chips').children.forEach((element, index) => {
+      element.data.tmpclear = null
+    })
+  }
 
   clearChips() {
+    // clear real chips
     this.tag('Chips').children.forEach((element, index) => {
-      if (element.data.clear == true) {
+      if (element.data.realclear == true) {
         console.log(element.data)
-        element.alpha = 0
+        element.color = 0xFF000000
+        //element.alpha = 0
       }
     })
   }
