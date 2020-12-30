@@ -3,19 +3,20 @@ import { Lightning, Utils } from '@lightningjs/sdk'
 import { Colors } from '../utils/Styles'
 import { MusicFiles } from '../utils/Music'
 
+import { MovingBackground } from '../components/movingbackground/MovingBackground'
+import { TimerBar } from '../components/timer/Timer'
 import { Board } from '../components/board/Board'
 
 export class GamePage extends Lightning.Component {
     static _template() {
         return {
             Background: {
-              x: 0,
-              y: 0,
-              w: 1920,
-              h: 1080,
-              colorTop: Colors.Gray,
-              colorBottom: Colors.Black,
-              rect: true
+              type: MovingBackground
+            },
+            Timer: {
+              x: 80,
+              y: 100,
+              type: TimerBar,
             },
             Board: {
               x: 640,

@@ -7,3 +7,5 @@ export const MusicFiles = [
 export const HomeMusic = 'POL-net-bots-short.wav'
 
 export const PopSound = 'zapsplat_cartoon_bubble_pop_007_40279.mp3' // https://www.zapsplat.com/sound-effect-category/bubbles/
+
+export const HornSound = 'transportation_bicycle_hooter_horn_001.mp3'

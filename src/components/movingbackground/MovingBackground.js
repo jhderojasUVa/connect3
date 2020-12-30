@@ -4,29 +4,55 @@ import { GameBackgrounds } from '../../utils/Styles'
 
 export class MovingBackground extends Lightning.Component {
   static _template() {
-    return {}
+    return {
+      Background: {}
+    }
+  }
+
+  _build() {
+    this._interval = null
   }
 
   _init() {
-    // set backgrounds
-    this.children = GameBackgrounds.map((background, index) => {
-      return {
-        scale: 1.3, // make it bigger than the screen
-        colorRight: 0x00000000, // make it transparent to right (for continuity)
-        src: background
-      }
-    })
-  }
-  
-  _active() {
-    // start movement
+    console.log('Background init')
+
   }
 
-  backgroundMovement() {
-    this.patch({
-      smooth: {
-        x: []
-      }
+  _active() {
+    // start movement
+    this.setBackground()
+    this.changeBackground()
+  }
+
+  _inactive() {
+    clearInterval(this._interval)
+  }
+
+  setBackground() {
+    this.tag('Background').src = Utils.asset(GameBackgrounds[Math.floor(Math.random() * (GameBackgrounds.length - 1))])
+    this._animation = this.tag('Background').animation({
+      duration: 45,
+      repeat: -1,
+      stopMethod: 'inmediate',
+      actions: [
+        {
+          p: 'scale',
+          v: {
+            0: 1,
+            0.3: 1.1,
+            0.5: 1,
+            0.7: 1.2,
+            1: 1
+          }
+        }
+      ]
     })
+    this._animation.start()
+  }
+
+  changeBackground() {
+    this._interval = setInterval(() => {
+      this.setBackground()
+    }, 45 * 10000)
   }
 }
