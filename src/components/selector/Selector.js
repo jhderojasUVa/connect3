@@ -43,6 +43,10 @@ export class Selector extends Lightning.Component {
     this.blink()
   }
 
+  _inactive() {
+    this.unblink()
+  }
+
   blink() {
     this._blink = this.animation({
       duration: 0.5,
@@ -62,11 +66,14 @@ export class Selector extends Lightning.Component {
     this._blink.start()
   }
 
+  unblink() {
+    this._blink.stop()
+  }
+
   static _states() {
     return [
       class Normal extends this {
         $enter() {
-          console.log('Selector is NORMAL')
           this.tag('TopLeft.Cross')._setState('Normal')
           this.tag('TopRight.Cross')._setState('Normal')
           this.tag('BottomLeft.Cross')._setState('Normal')
