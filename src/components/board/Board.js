@@ -247,8 +247,6 @@ export class Board extends Lightning.Component {
       nextColor = this.returnColorChip(nextIndex)
     }
 
-    console.log(`${index}=${currentColor} xx  ${nextIndex}=${nextColor}`)
-
     if (currentColor == nextColor) {
       this.markChipAsTmpClear(index)
       this.markChipAsTmpClear(nextIndex)
@@ -282,7 +280,6 @@ export class Board extends Lightning.Component {
   markTmpClearChipsAsClear() {
     this.tag('Chips').children.forEach((element) => {
       if (element.data.tmpclear == true) {
-        console.log(element.data)
         element.data.realclear = true
       }
     })
@@ -298,7 +295,6 @@ export class Board extends Lightning.Component {
     // clear real chips
     this.tag('Chips').children.forEach((element, index) => {
       if (element.data.realclear == true) {
-        //console.log(element.data)
         element.color = 0xFF000000
         this._popSound.play()
         //element.alpha = 0
