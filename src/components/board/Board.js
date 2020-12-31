@@ -176,6 +176,10 @@ export class Board extends Lightning.Component {
     console.log(this.tag('Chips').children[this._selectorIndex].data)
     this._selected = this._selected ? false : true
     // Change selector!
+    this.changeSelector()
+  }
+
+  changeSelector() {
     if (this._selected) {
       this.tag('Selector')._setState('Selected')
     } else {
@@ -395,21 +399,21 @@ export class Board extends Lightning.Component {
     console.log(oldIndex, newIndex)
     // Remember positions
     const oldChipData = {
-      //data: this.tag('Chips').children[oldIndex].data,
+      data: this.tag('Chips').children[oldIndex].data,
+      texture: this.tag('Chips').children[oldIndex].texture,
       x: this.tag('Chips').children[oldIndex].x,
       y: this.tag('Chips').children[oldIndex].y,
     }
-    const oldChip = this.tag('Chips').children[oldIndex]
     const newChipData = {
-      //data: this.tag('Chips').children[newIndex].data.data,
+      data: this.tag('Chips').children[newIndex].data,
+      texture: this.tag('Chips').children[newIndex].texture,
       x: this.tag('Chips').children[newIndex].x,
       y: this.tag('Chips').children[newIndex].y,
     }
-    const newChip = this.tag('Chips').children[newIndex]
+
     // movement
     // old to new
     this.tag('Chips').children[oldIndex].patch({
-      //data: newChipData.data,
       smooth: {
         x: newChipData.x,
         y: newChipData.y,
@@ -423,23 +427,26 @@ export class Board extends Lightning.Component {
         y: oldChipData.y,
       },
     })
-    // exchange
-    // original positions
-    this.tag('Chips').children[oldIndex].patch({
-      //data: newChipData.data,
-      x: oldChipData.x,
-      y: oldChipData.y,
-    })
-    this.tag('Chips').children[newIndex].patch({
-      //data: oldChipData.data,
-      x: newChipData.x,
-      y: newChipData.y,
-    })
-    // change data
-    this.tag('Chips').childList.replace(newChip, oldChip)
 
-    //this.checkAllCleared() // check clear
+    // change internal data
+    setTimeout(() => {
+      // exchange
+      // original positions but new data
+      this.tag('Chips').children[oldIndex].patch({
+        data: newChipData.data, // swap data
+        texture: newChipData.texture, // swap colors
+        x: oldChipData.x,
+        y: oldChipData.y,
+      })
+      this.tag('Chips').children[newIndex].patch({
+        data: oldChipData.data,
+        texture: oldChipData.texture,
+        x: newChipData.x,
+        y: newChipData.y,
+      })
+    })
 
     this._selected = false // loose the selection!
+    this.changeSelector()
   }
 }
