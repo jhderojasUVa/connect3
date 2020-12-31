@@ -1,6 +1,6 @@
 import { Lightning, Utils } from '@lightningjs/sdk'
 
-import { Colors, ChipSize } from '../../utils/Styles'
+import { ChipSize } from '../../utils/Styles'
 
 export class Chip extends Lightning.Component {
   static _template() {
@@ -10,14 +10,8 @@ export class Chip extends Lightning.Component {
     }
   }
 
-  _init() {
-    //console.log(this)
-  }
-
-  _setup() {
-  }
-
   set image(val) {
+    // sets the icon/image (future use)
     this.src = Utils.asset(`chips/${val}`)
   }
 }

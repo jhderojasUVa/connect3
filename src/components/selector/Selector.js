@@ -43,10 +43,6 @@ export class Selector extends Lightning.Component {
     this.blink()
   }
 
-  _inactive() {
-    this.unblink()
-  }
-
   blink() {
     this._blink = this.animation({
       duration: 0.5,

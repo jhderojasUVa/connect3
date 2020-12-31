@@ -24,6 +24,7 @@ export class Board extends Lightning.Component {
   }
 
   _build() {
+    // build time
     this._selected = false // chip selected for movement
     this._selectorIndex = 0 // index selected
     this._oldselectorIndex = 0 // old index
@@ -37,20 +38,26 @@ export class Board extends Lightning.Component {
   }
 
   _init() {
+    // init time
     this._chips = this.tag('Chips')
     this._selector = this.tag('Selector')
   }
 
   _active() {
-    this._chipsChildren = this.tag('Chips').children
+    // when active
+    // this._chipsChildren = this.tag('Chips').children
+    // generate the lines
     this._generateLines(643, SpaceBetween, 'x', this.tag('HorizontalLines'))
     this._generateLines(965, SpaceBetween, 'y', this.tag('VerticalLines'))
+    // generate the chips
     this._generateChips()
 
+    // check and clear chips
     this.checkAllCleared()
   }
 
   _generateLines(size, separation, axis, object) {
+    // generate the lines
     let arrayOfLines = []
     for (let i = 0; i < size / separation; i++) {
       arrayOfLines.push({
@@ -82,6 +89,7 @@ export class Board extends Lightning.Component {
   }
 
   _generateChips() {
+    // generate all the chips
     let chips = []
     for (let i = 0; i < 96; i++) {
       chips.push(i)
@@ -193,8 +201,6 @@ export class Board extends Lightning.Component {
       x: (index % 8) * SpaceBetween,
       y: index < 8 ? 0 : Math.floor(index / 8) * SpaceBetween,
     })
-    // check chips & clear
-    //this.checkAllCleared()
   }
 
   returnXY(index) {
