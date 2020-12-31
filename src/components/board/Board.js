@@ -29,8 +29,10 @@ export class Board extends Lightning.Component {
   }
 
   _build() {
-    this._music = undefined
-    this._selectorIndex = 0
+    this._selected = false // chip selected for movement
+    this._selectorIndex = 0 // index selected
+    this._oldselectorIndex = 0 // old index
+    this._music = undefined // music
 
     this._popSound = new Howl({
       src: [Utils.asset(`sounds/effects/${PopSound}`)], // https://www.playonloop.com/freebies-download/
@@ -125,39 +127,52 @@ export class Board extends Lightning.Component {
 
   _handleLeft() {
     if (this._selectorIndex % 8 !== 0) {
+      this._oldselectorIndex = this._selectorIndex
       this._selectorIndex--
     }
     this.moveSelector(this._selectorIndex)
+    if (this._selected == true) {
+      this.moveChips(this._oldselectorIndex, this._selectorIndex)
+    }
   }
 
   _handleRight() {
     if (this._selectorIndex % 8 !== 7) {
+      this._oldselectorIndex = this._selectorIndex
       this._selectorIndex++
     }
     this.moveSelector(this._selectorIndex)
+    if (this._selected == true) {
+      this.moveChips(this._oldselectorIndex, this._selectorIndex)
+    }
   }
 
   _handleUp() {
     if (this._selectorIndex >= 8) {
+      this._oldselectorIndex = this._selectorIndex
       this._selectorIndex = this._selectorIndex - 8
     }
     this.moveSelector(this._selectorIndex)
+    if (this._selected == true) {
+      this.moveChips(this._oldselectorIndex, this._selectorIndex)
+    }
   }
 
   _handleDown() {
     if (this._selectorIndex < 96 - 8) {
+      this._oldselectorIndex = this._selectorIndex
       this._selectorIndex = this._selectorIndex + 8
     }
     this.moveSelector(this._selectorIndex)
+    if (this._selected == true) {
+      this.moveChips(this._oldselectorIndex, this._selectorIndex)
+    }
   }
 
   _handleEnter() {
     // debug mode!
-    /*
-    console.log(this._selectorIndex)
-    */
     console.log(this.tag('Chips').children[this._selectorIndex].data)
-
+    this._selected = this._selected ? false : true
   }
 
   moveSelector(index) {
@@ -167,12 +182,7 @@ export class Board extends Lightning.Component {
       y: (index < 8) ? 0 : Math.floor(index / 8) * SpaceBetween
     })
     // check chips & clear
-    /*
-    this.checkChipsRow()
-    this.clearChips()
-    this.checkChipsColumn()
-    this.clearChips()
-    */
+    //this.checkAllCleared()
   }
 
   returnXY(index) {
@@ -332,7 +342,10 @@ export class Board extends Lightning.Component {
             ]
           }
         })
-        this._popSound.play()
+        // sound must take some time!
+        setTimeout(() => {
+          this._popSound.play()
+        }, 50)
 
         element.transition('alpha').on('finish', () => {
           this.randomizeChip(element.data.index)
@@ -359,5 +372,57 @@ export class Board extends Lightning.Component {
       },
       texture: Lightning.Tools.getRoundRect(ChipSize.w, ChipSize.h, 40, 0, 0xffff00ff, true, chipColor),
     })
+  }
+
+  moveChips(oldIndex, newIndex) {
+    console.log(oldIndex, newIndex)
+    // Remember positions
+    const oldChipData = {
+      //data: this.tag('Chips').children[oldIndex].data,
+      x: this.tag('Chips').children[oldIndex].x,
+      y: this.tag('Chips').children[oldIndex].y
+    }
+    const oldChip = this.tag('Chips').children[oldIndex]
+    const newChipData = {
+      //data: this.tag('Chips').children[newIndex].data.data,
+      x: this.tag('Chips').children[newIndex].x,
+      y: this.tag('Chips').children[newIndex].y
+    }
+    const newChip = this.tag('Chips').children[newIndex]
+    // movement
+    // old to new
+    this.tag('Chips').children[oldIndex].patch({
+      //data: newChipData.data,
+      smooth: {
+        x: newChipData.x,
+        y: newChipData.y,
+      }
+    })
+    // new into old
+    this.tag('Chips').children[newIndex].patch({
+      //data: oldChipData.data,
+      smooth: {
+        x: oldChipData.x,
+        y: oldChipData.y,
+      }
+    })
+    // exchange
+    // original positions
+    this.tag('Chips').children[oldIndex].patch({
+      //data: newChipData.data,
+      x: oldChipData.x,
+      y: oldChipData.y,
+    })
+    this.tag('Chips').children[newIndex].patch({
+      //data: oldChipData.data,
+      x: newChipData.x,
+      y: newChipData.y,
+    })
+    // change data
+    this.tag('Chips').childList.replace(newChip, oldChip)
+
+    this.checkAllCleared() // check clear
+
+    this._selected = false // loose the selection!
   }
 }
