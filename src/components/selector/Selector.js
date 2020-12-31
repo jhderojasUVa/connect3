@@ -5,39 +5,37 @@ import { Colors } from '../../utils/Styles'
 export class Selector extends Lightning.Component {
   static _template() {
     return {
-      colorTop: Colors.Blue,
-      colorBottom: Colors.Red,
       TopLeft: {
         x: 5,
         y: 5,
         Cross: {
-          type: HalfCross
-        }
+          type: HalfCross,
+        },
       },
       TopRight: {
         x: 80 - 5,
         y: 5,
         Cross: {
           type: HalfCross,
-          rotation: Math.PI / 2
-        }
+          rotation: Math.PI / 2,
+        },
       },
       BottomLeft: {
         x: 5,
         y: 80 - 5,
         Cross: {
           type: HalfCross,
-          rotation: 3 * Math.PI / 2
-        }
+          rotation: (3 * Math.PI) / 2,
+        },
       },
       BottomRight: {
         x: 80 - 5,
         y: 80 - 5,
         Cross: {
           type: HalfCross,
-          rotation: Math.PI
-        }
-      }
+          rotation: Math.PI,
+        },
+      },
     }
   }
 
@@ -56,12 +54,34 @@ export class Selector extends Lightning.Component {
           v: {
             0: 0,
             0.5: 1,
-            1: 0
-          }
-        }
-      ]
+            1: 0,
+          },
+        },
+      ],
     })
     this._blink.start()
+  }
+
+  static _states() {
+    return [
+      class Normal extends this {
+        $enter() {
+          console.log('Selector is NORMAL')
+          this.tag('TopLeft.Cross')._setState('Normal')
+          this.tag('TopRight.Cross')._setState('Normal')
+          this.tag('BottomLeft.Cross')._setState('Normal')
+          this.tag('BottomRight.Cross')._setState('Normal')
+        }
+      },
+      class Selected extends this {
+        $enter() {
+          this.tag('TopLeft.Cross')._setState('Selected')
+          this.tag('TopRight.Cross')._setState('Selected')
+          this.tag('BottomLeft.Cross')._setState('Selected')
+          this.tag('BottomRight.Cross')._setState('Selected')
+        }
+      },
+    ]
   }
 }
 
@@ -72,14 +92,31 @@ class HalfCross extends Lightning.Component {
         w: 20,
         h: 5,
         color: Colors.White,
-        rect: true
+        rect: true,
       },
       Line2: {
         w: 5,
         h: 20,
         color: Colors.White,
         rect: true,
-      }
+      },
     }
+  }
+
+  static _states() {
+    return [
+      class Normal extends this {
+        $enter() {
+          this.tag('Line1').color = Colors.White
+          this.tag('Line2').color = Colors.White
+        }
+      },
+      class Selected extends this {
+        $enter() {
+          this.tag('Line1').color = Colors.Yellow
+          this.tag('Line2').color = Colors.Yellow
+        }
+      },
+    ]
   }
 }

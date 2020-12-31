@@ -14,17 +14,12 @@ export class Board extends Lightning.Component {
     return {
       w: 643,
       h: 963,
-      HorizontalLines: {
-
-      },
-      VerticalLines: {
-
-      },
-      Chips: {
-      },
+      HorizontalLines: {},
+      VerticalLines: {},
+      Chips: {},
       Selector: {
-        type: Selector
-      }
+        type: Selector,
+      },
     }
   }
 
@@ -46,7 +41,6 @@ export class Board extends Lightning.Component {
     this._selector = this.tag('Selector')
   }
 
-
   _active() {
     this._chipsChildren = this.tag('Chips').children
     this._generateLines(643, SpaceBetween, 'x', this.tag('HorizontalLines'))
@@ -58,9 +52,9 @@ export class Board extends Lightning.Component {
 
   _generateLines(size, separation, axis, object) {
     let arrayOfLines = []
-    for (let i = 0; i < (size / separation); i++) {
+    for (let i = 0; i < size / separation; i++) {
       arrayOfLines.push({
-        index: i
+        index: i,
       })
     }
 
@@ -72,7 +66,7 @@ export class Board extends Lightning.Component {
           w: 2,
           axis: 'x',
           color: Colors.White,
-          rect: true
+          rect: true,
         }
       } else {
         return {
@@ -81,7 +75,7 @@ export class Board extends Lightning.Component {
           h: 2,
           axis: 'y',
           color: Colors.White,
-          rect: true
+          rect: true,
         }
       }
     })
@@ -103,24 +97,32 @@ export class Board extends Lightning.Component {
       const colorName = Colors.Index[Math.floor(Math.random() * Colors.Index.length)]
       const chipColor = Colors[colorName]
 
-      if (index > 0 && (index % 8) == 0) {
+      if (index > 0 && index % 8 == 0) {
         // new line!
         start.y++
       }
       return {
         w: ChipSize.w,
         h: ChipSize.h,
-        x: index % 8 * SpaceBetween,
+        x: (index % 8) * SpaceBetween,
         y: start.y * SpaceBetween,
         data: {
           index,
           x: index % 8,
           y: start.y,
-          color: colorName
+          color: colorName,
         },
         rect: true,
-        texture: Lightning.Tools.getRoundRect(ChipSize.w, ChipSize.h, 40, 0, 0xffff00ff, true, chipColor),
-        type: Chip
+        texture: Lightning.Tools.getRoundRect(
+          ChipSize.w,
+          ChipSize.h,
+          40,
+          0,
+          0xffff00ff,
+          true,
+          chipColor
+        ),
+        type: Chip,
       }
     })
   }
@@ -173,13 +175,19 @@ export class Board extends Lightning.Component {
     // debug mode!
     console.log(this.tag('Chips').children[this._selectorIndex].data)
     this._selected = this._selected ? false : true
+    // Change selector!
+    if (this._selected) {
+      this.tag('Selector')._setState('Selected')
+    } else {
+      this.tag('Selector')._setState('Normal')
+    }
   }
 
   moveSelector(index) {
     // selector movement
     this._selector.patch({
       x: (index % 8) * SpaceBetween,
-      y: (index < 8) ? 0 : Math.floor(index / 8) * SpaceBetween
+      y: index < 8 ? 0 : Math.floor(index / 8) * SpaceBetween,
     })
     // check chips & clear
     //this.checkAllCleared()
@@ -191,7 +199,7 @@ export class Board extends Lightning.Component {
     // y also a row
     return {
       x: index % 8,
-      y: Math.floor(index / 8)
+      y: Math.floor(index / 8),
     }
   }
 
@@ -201,7 +209,9 @@ export class Board extends Lightning.Component {
   }
 
   returnColorChip(index) {
-    return this.tag('Chips').children[index] ? this.tag('Chips').children[index].data.color : undefined
+    return this.tag('Chips').children[index]
+      ? this.tag('Chips').children[index].data.color
+      : undefined
   }
 
   checkChipsCoincidences(index = 0, coincidences = 0, axis = 'x') {
@@ -296,7 +306,7 @@ export class Board extends Lightning.Component {
   }
 
   markTmpClearChipsAsClear() {
-    this.tag('Chips').children.forEach((element) => {
+    this.tag('Chips').children.forEach(element => {
       if (element.data.tmpclear == true) {
         element.data.realclear = true
       }
@@ -310,7 +320,7 @@ export class Board extends Lightning.Component {
   }
 
   removeRealClearChips() {
-    this.tag('Chips').children.forEach((element) => {
+    this.tag('Chips').children.forEach(element => {
       if (element.data.realclear == true) {
         element.data.realclear = null
       }
@@ -329,18 +339,18 @@ export class Board extends Lightning.Component {
               {
                 duration: 0.5,
                 delay: 0.2,
-                timmingFunction: 'ease-in'
-              }
+                timmingFunction: 'ease-in',
+              },
             ],
             alpha: [
               0,
               {
                 duration: 0.6,
                 delay: 0.3,
-                timmingFunction: 'ease-in'
-              }
-            ]
-          }
+                timmingFunction: 'ease-in',
+              },
+            ],
+          },
         })
         // sound must take some time!
         setTimeout(() => {
@@ -357,7 +367,6 @@ export class Board extends Lightning.Component {
     setTimeout(() => {
       this.checkAllCleared()
     }, 1500)
-
   }
 
   randomizeChip(index) {
@@ -368,9 +377,17 @@ export class Board extends Lightning.Component {
       alpha: 1,
       data: {
         ...this.tag('Chips').children[index].data,
-        color: colorName
+        color: colorName,
       },
-      texture: Lightning.Tools.getRoundRect(ChipSize.w, ChipSize.h, 40, 0, 0xffff00ff, true, chipColor),
+      texture: Lightning.Tools.getRoundRect(
+        ChipSize.w,
+        ChipSize.h,
+        40,
+        0,
+        0xffff00ff,
+        true,
+        chipColor
+      ),
     })
   }
 
@@ -380,13 +397,13 @@ export class Board extends Lightning.Component {
     const oldChipData = {
       //data: this.tag('Chips').children[oldIndex].data,
       x: this.tag('Chips').children[oldIndex].x,
-      y: this.tag('Chips').children[oldIndex].y
+      y: this.tag('Chips').children[oldIndex].y,
     }
     const oldChip = this.tag('Chips').children[oldIndex]
     const newChipData = {
       //data: this.tag('Chips').children[newIndex].data.data,
       x: this.tag('Chips').children[newIndex].x,
-      y: this.tag('Chips').children[newIndex].y
+      y: this.tag('Chips').children[newIndex].y,
     }
     const newChip = this.tag('Chips').children[newIndex]
     // movement
@@ -396,7 +413,7 @@ export class Board extends Lightning.Component {
       smooth: {
         x: newChipData.x,
         y: newChipData.y,
-      }
+      },
     })
     // new into old
     this.tag('Chips').children[newIndex].patch({
@@ -404,7 +421,7 @@ export class Board extends Lightning.Component {
       smooth: {
         x: oldChipData.x,
         y: oldChipData.y,
-      }
+      },
     })
     // exchange
     // original positions
@@ -421,7 +438,7 @@ export class Board extends Lightning.Component {
     // change data
     this.tag('Chips').childList.replace(newChip, oldChip)
 
-    this.checkAllCleared() // check clear
+    //this.checkAllCleared() // check clear
 
     this._selected = false // loose the selection!
   }
