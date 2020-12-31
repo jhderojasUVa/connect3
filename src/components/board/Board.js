@@ -52,7 +52,7 @@ export class Board extends Lightning.Component {
     this._generateLines(965, SpaceBetween, 'y', this.tag('VerticalLines'))
     // generate the chips
     this._generateChips()
-    this.checkAllCleared()
+    this.checkBoard()
   }
 
   _generateLines(size, separation, axis, object) {
@@ -256,6 +256,7 @@ export class Board extends Lightning.Component {
       }
     } else {
       if (coincidences >= 2) {
+        this.coincidences = true
         this.markChipAsTmpClear(index)
         this.markTmpClearChipsAsClear()
       }
@@ -281,6 +282,7 @@ export class Board extends Lightning.Component {
       this.checkYAxisChips(nextIndex, coincidences + 1)
     } else {
       if (coincidences >= 2) {
+        this.coincidences = true
         this.markChipAsTmpClear(index)
         this.markTmpClearChipsAsClear()
       }
@@ -303,12 +305,12 @@ export class Board extends Lightning.Component {
     }
   }
 
-  checkAllCleared() {
-    console.log('Running!')
+  checkBoard() {
+    console.log('checkBoard!')
     this.checkChipsRow()
     this.checkChipsColumn()
     this.clearChips()
-    this.removeRealClearChips()
+    this.removeRealClearChips() // this start the process again!
   }
 
   markChipAsTmpClear(index) {
@@ -338,13 +340,17 @@ export class Board extends Lightning.Component {
       }
     })
 
-    // Run at the end
-    setTimeout(() => {
-      this.checkAllCleared()
-    })
+    // Run at the end?
+    if (this.coincidences == true) {
+      setTimeout(() => {
+        this.coincidences = false
+        this.checkBoard()
+      }, 1500)
+    }
   }
 
   clearChips() {
+    // remove chips that must be removed and update to new ones
     console.log('ClearCHips')
     // clear real chips
     this.tag('Chips').children.forEach((element, index) => {
