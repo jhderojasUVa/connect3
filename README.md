@@ -30,7 +30,7 @@ Because it's a progress, there's a lot ToDos:
 3. Icons, icons, icons, icons... I said icons?
 4. Finish the time limit (rest when you complete something)
 5. Better home page
-6. Score board!
+6. Score board! (and save it on the browser storage -for now-)
 
 ### Getting started
 
