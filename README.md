@@ -1,8 +1,36 @@
 # Connect3
 
+## com.jhderojasuva.connect3
+
 Connect3 is the typical board game that you must connect three items one next to another in order to clean them and let more space to new ones.
 
-## com.jhderojasuva.connect3
+There's two different styles:
+
+- Time game. You have time to clear some
+- Unlimited. No time, you can be forever waiting
+
+## Images
+
+Is a working progress, the images show can change over the time:
+
+![Time limit game](./gitimages/gamelimited.png)
+
+This is an example of a game with time limit. You have a time bar that will fill until you connect 3 dots/icons/similar images. Them, some time will be rested.
+
+![No Time limit game](./gitimages/gameunlimited.png)
+
+This is an example of a game with no time limit. You can be playing all the time you want.
+
+## ToDo
+
+Because it's a progress, there's a lot ToDos:
+
+1. Refactor how to check and clean chips (I don't trust on what it's done)
+2. Better selector (it's ugly!)
+3. Icons, icons, icons, icons... I said icons?
+4. Finish the time limit (rest when you complete something)
+5. Better home page
+6. Score board!
 
 ### Getting started
 
