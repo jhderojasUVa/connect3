@@ -54,8 +54,8 @@ export class Board extends Lightning.Component {
     this.checkChipsRow()
     this.clearChips()
 
-    //this.checkChipsColumn()
-    //this.clearChips()
+    this.checkChipsColumn()
+    this.clearChips()
   }
 
   _generateLines(size, separation, axis, object) {
@@ -238,32 +238,29 @@ export class Board extends Lightning.Component {
     }
   }
 
-  checkYAxisChips(minindex, coincidences) {
-    const nextIndex = minindex + 8
-    const currentColor = this.returnColorChip(nextIndex)
-    // next (nextColor)
-    const nextColor = this.returnColorChip(nextIndex)
-    //console.log( `precoin ${coincidences} >> cu ${minindex}=${currentColor} | next${nextIndex}=${nextColor} ` )
-    if (nextIndex < BOARDSIZE.index - 8) { // end of the board!
-      if (currentColor == nextColor) {
-        // mark them
-        this.markChipAsTmpClear(minindex)
-        this.checkChipsCoincidences(nextIndex, coincidences + 1, 'y')
-      } else {
-        if (coincidences >= 2) {
-          //console.log(`OK ${minindex}=${currentColor} ---- ${nextIndex}=${nextColor} --- ${coincidences}`)
-          // put as tmp clear the current one
-          this.markChipAsTmpClear(minindex)
-          // mark all clear to real clear chips
-          this.markTmpClearChipsAsClear()
-          this.checkChipsCoincidences(nextIndex, 0, 'y')
-        } else {
-          // remove old marked as clear chips
-          //console.log(`BAD ${minindex}=${currentColor} ---- ${nextIndex}=${nextColor}`)
-          this.removeTmpClearChips()
-          // go to the next
-          this.checkChipsCoincidences(nextIndex, 0, 'y')
-        }
+  checkYAxisChips(index, coincidences) {
+    const nextIndex = index + 8 < 95 ? index + 8 : undefined
+
+    let nextColor = undefined
+    const currentColor = this.returnColorChip(index)
+    if (nextIndex) {
+      nextColor = this.returnColorChip(nextIndex)
+    }
+
+    console.log(`${index}=${currentColor} xx  ${nextIndex}=${nextColor}`)
+
+    if (currentColor == nextColor) {
+      this.markChipAsTmpClear(index)
+      this.markChipAsTmpClear(nextIndex)
+      this.checkYAxisChips(nextIndex, coincidences + 1)
+    } else {
+      if (coincidences >= 2) {
+        this.markChipAsTmpClear(index)
+        this.markTmpClearChipsAsClear()
+      }
+      this.removeTmpClearChips()
+      if (nextIndex < this.tag('Chips').children.length - 1) {
+        this.checkYAxisChips(nextIndex, 0)
       }
     }
   }
@@ -272,8 +269,8 @@ export class Board extends Lightning.Component {
     this.checkChipsCoincidences(row, 0, 'x')
   }
 
-  checkChipsColumn(column = 0, maxcolumn = 8) {
-    for (column; column < maxcolumn; column++) {
+  checkChipsColumn(column = 0) {
+    for (column; column < 12; column++) {
       this.checkChipsCoincidences(column, 0, 'y')
     }
   }
