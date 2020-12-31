@@ -213,7 +213,6 @@ export class Board extends Lightning.Component {
     const currentColor = this.returnColorChip(index)
     if (nextIndex) {
       nextColor = this.returnColorChip(nextIndex)
-      console.log(`${nextIndex} = ${nextColor}`)
     }
 
     if (currentColor == nextColor) {
@@ -224,6 +223,7 @@ export class Board extends Lightning.Component {
           this.checkXAxisChips(nextIndex, coincidences + 1)
         }
       } else {
+        this.removeTmpClearChips()
         this.checkXAxisChips(nextIndex, 0)
       }
     } else {
