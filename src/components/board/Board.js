@@ -51,11 +51,7 @@ export class Board extends Lightning.Component {
     this._generateLines(965, SpaceBetween, 'y', this.tag('VerticalLines'))
     this._generateChips()
 
-    this.checkChipsRow()
-    this.clearChips()
-
-    this.checkChipsColumn()
-    this.clearChips()
+    this.checkAllCleared()
   }
 
   _generateLines(size, separation, axis, object) {
@@ -159,8 +155,9 @@ export class Board extends Lightning.Component {
     // debug mode!
     /*
     console.log(this._selectorIndex)
-    console.log(this.tag('Chips').children[this._selectorIndex].data)
     */
+    console.log(this.tag('Chips').children[this._selectorIndex].data)
+
   }
 
   moveSelector(index) {
@@ -275,6 +272,15 @@ export class Board extends Lightning.Component {
     }
   }
 
+  checkAllCleared() {
+    // check if everything is cleared
+    this.checkChipsRow()
+    this.clearChips()
+
+    this.checkChipsColumn()
+    this.clearChips()
+  }
+
   markChipAsTmpClear(index) {
     this.tag('Chips').children[index].data.tmpclear = true
   }
@@ -334,6 +340,11 @@ export class Board extends Lightning.Component {
       }
     })
     this.removeRealClearChips()
+    // Check again
+    setTimeout(() => {
+      this.checkAllCleared()
+    }, 1500)
+
   }
 
   randomizeChip(index) {
