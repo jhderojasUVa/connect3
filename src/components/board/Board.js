@@ -35,6 +35,8 @@ export class Board extends Lightning.Component {
       autoplay: true,
       loop: false,
     })
+
+    this._coincidences = false
   }
 
   _init() {
@@ -44,15 +46,12 @@ export class Board extends Lightning.Component {
   }
 
   _active() {
-    // when active
-    // this._chipsChildren = this.tag('Chips').children
+    // active first time
     // generate the lines
     this._generateLines(643, SpaceBetween, 'x', this.tag('HorizontalLines'))
     this._generateLines(965, SpaceBetween, 'y', this.tag('VerticalLines'))
     // generate the chips
     this._generateChips()
-
-    // check and clear chips
     this.checkAllCleared()
   }
 
@@ -293,22 +292,23 @@ export class Board extends Lightning.Component {
   }
 
   checkChipsRow(row = 0) {
+    console.log('CheckChipsRow')
     this.checkChipsCoincidences(row, 0, 'x')
   }
 
   checkChipsColumn(column = 0) {
+    console.log('CheckChipsColumn')
     for (column; column < 12; column++) {
       this.checkChipsCoincidences(column, 0, 'y')
     }
   }
 
   checkAllCleared() {
-    // check if everything is cleared
+    console.log('Running!')
     this.checkChipsRow()
-    this.clearChips()
-
     this.checkChipsColumn()
     this.clearChips()
+    this.removeRealClearChips()
   }
 
   markChipAsTmpClear(index) {
@@ -330,14 +330,22 @@ export class Board extends Lightning.Component {
   }
 
   removeRealClearChips() {
+    // let fireAgain = false
+    console.log('removeRealClearChips')
     this.tag('Chips').children.forEach(element => {
       if (element.data.realclear == true) {
         element.data.realclear = null
       }
     })
+
+    // Run at the end
+    setTimeout(() => {
+      this.checkAllCleared()
+    })
   }
 
   clearChips() {
+    console.log('ClearCHips')
     // clear real chips
     this.tag('Chips').children.forEach((element, index) => {
       if (element.data.realclear == true) {
@@ -373,11 +381,6 @@ export class Board extends Lightning.Component {
         })
       }
     })
-    this.removeRealClearChips()
-    // Check again
-    setTimeout(() => {
-      this.checkAllCleared()
-    }, 1500)
   }
 
   randomizeChip(index) {
