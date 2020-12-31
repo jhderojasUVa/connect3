@@ -11,3 +11,5 @@ export const PopSound = 'zapsplat_cartoon_bubble_pop_007_40279.mp3' // https://w
 export const HornSound = 'transportation_bicycle_hooter_horn_001.mp3'
 
 export const HarryUp = 'co_cartoon_wobble_flutter_wood_mallet_style_006_041.mp3'
+
+export const FailMusic = 'cartoon_fail_strings_trumpet.mp3'

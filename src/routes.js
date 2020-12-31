@@ -25,6 +25,16 @@ export default {
             component: GamePage
         },
         {
+          path: 'game/:type',
+          on: (page, { type }) => {
+            return new Promise((resolve, reject) => {
+              page.tipeOfGame =  type
+              resolve()
+            })
+          },
+          component: GamePage
+        },
+        {
             path: 'scores',
             component: ScoresPage
         },

@@ -85,12 +85,21 @@ export class HomePage extends Lightning.Component {
         this._menu.items = [
           {
             type: ButtonText,
-            title: 'Play!',
+            title: 'Play! (Time based)',
             size: {
               w: 500,
               h: 50,
             },
             action: 'play'
+          },
+          {
+            type: ButtonText,
+            title: 'Play Unlimited! (Time based)',
+            size: {
+              w: 500,
+              h: 50,
+            },
+            action: 'play_unlimited'
           },
           {
             type: ButtonText,
@@ -109,9 +118,15 @@ export class HomePage extends Lightning.Component {
         case 'play':
           this._music.stop()
           Router.navigate('game')
+          break
+        case 'play_unlimited':
+          this._music.stop()
+          Router.navigate('game/unlimited')
+          break
         case 'exit':
-          // this.application.exit()
+          this._music.stop()
           console.log('EXIT!')
+          break
         default:
           return
       }
