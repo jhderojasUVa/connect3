@@ -157,8 +157,10 @@ export class Board extends Lightning.Component {
 
   _handleEnter() {
     // debug mode!
+    /*
     console.log(this._selectorIndex)
     console.log(this.tag('Chips').children[this._selectorIndex].data)
+    */
   }
 
   moveSelector(index) {
@@ -291,14 +293,60 @@ export class Board extends Lightning.Component {
     })
   }
 
+  removeRealClearChips() {
+    this.tag('Chips').children.forEach((element) => {
+      if (element.data.realclear == true) {
+        element.data.realclear = null
+      }
+    })
+  }
+
   clearChips() {
     // clear real chips
     this.tag('Chips').children.forEach((element, index) => {
       if (element.data.realclear == true) {
-        element.color = 0xFF000000
+        // animation
+        element.patch({
+          smooth: {
+            scale: [
+              1.5,
+              {
+                duration: 0.5,
+                delay: 0.2,
+                timmingFunction: 'ease-in'
+              }
+            ],
+            alpha: [
+              0,
+              {
+                duration: 0.6,
+                delay: 0.3,
+                timmingFunction: 'ease-in'
+              }
+            ]
+          }
+        })
         this._popSound.play()
-        //element.alpha = 0
+
+        element.transition('alpha').on('finish', () => {
+          this.randomizeChip(element.data.index)
+        })
       }
+    })
+    this.removeRealClearChips()
+  }
+
+  randomizeChip(index) {
+    const colorName = Colors.Index[Math.floor(Math.random() * Colors.Index.length)]
+    const chipColor = Colors[colorName]
+    this.tag('Chips').children[index].patch({
+      scale: 1,
+      alpha: 1,
+      data: {
+        ...this.tag('Chips').children[index].data,
+        color: colorName
+      },
+      texture: Lightning.Tools.getRoundRect(ChipSize.w, ChipSize.h, 40, 0, 0xffff00ff, true, chipColor),
     })
   }
 }
