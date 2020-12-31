@@ -364,6 +364,7 @@ export class Board extends Lightning.Component {
         })
         // sound must take some time!
         setTimeout(() => {
+          this.application.emit('removedChips')
           this._popSound.play()
         }, 50)
 

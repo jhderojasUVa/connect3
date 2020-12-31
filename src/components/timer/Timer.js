@@ -20,9 +20,9 @@ export class TimerBar extends Lightning.Component {
           fontSize: 32,
           textColor: Colors.White,
           shadow: true,
-          shadowColor: 0xFFff2222,
-          shadowBlur: 3
-        }
+          shadowColor: 0xffff2222,
+          shadowBlur: 3,
+        },
       },
       Timmer: {
         y: 50,
@@ -32,14 +32,14 @@ export class TimerBar extends Lightning.Component {
           w: 0,
           h: 28,
           rect: true,
-          color: Colors.Green
+          color: Colors.Green,
         },
         Border: {
           w: BARSIZE, // size of the time bar
           h: 30,
           texture: Lightning.Tools.getRoundRect(500, 30, 3, 5, Colors.Gray, false, 0x00000000),
         },
-      }
+      },
     }
   }
 
@@ -62,6 +62,29 @@ export class TimerBar extends Lightning.Component {
       autoplay: false,
       loop: false,
     })
+
+    // remove time (or put more time) if you clear something (by default 30)
+    this.application.on('removedChips', (quantity = 30) => {
+      this.remove(quantity)
+    })
+  }
+
+  remove(val) {
+    const currentTime = this._progress.w
+    // go back on time!
+    this._progress.patch({
+      smooth: {
+        w: currentTime - val,
+      },
+    })
+    // but not so back that you are below time
+    if (this._progress.w < 0) {
+      this._progress.patch({
+        smooth: {
+          w: 0,
+        },
+      })
+    }
   }
 
   _active() {
@@ -89,8 +112,8 @@ export class TimerBar extends Lightning.Component {
       } else {
         this._progress.patch({
           smooth: {
-            w: newTime
-          }
+            w: newTime,
+          },
         })
       }
     }, 1000)
