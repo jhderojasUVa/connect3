@@ -2,7 +2,7 @@ import { Lightning } from '@lightningjs/sdk'
 
 import { Colors } from '../../utils/Styles'
 
-export class Score extends Lightning.Component() {
+export class Score extends Lightning.Component {
   static _template() {
     return {
       ScoreText: {
@@ -17,9 +17,11 @@ export class Score extends Lightning.Component() {
         }
       },
       ScoreNumber: {
-        x: 350,
+        x: 0,
+        y: 30,
+        w: 640 - 30,
         text: {
-          text: '0',
+          text: '1000000000',
           fontFace: 'Jura',
           fontSize: 90,
           textColor: Colors.White
@@ -34,8 +36,14 @@ export class Score extends Lightning.Component() {
     })
   }
 
-  set scoreNumber(val) {
+  scoreNumber(val) {
     const current = parseInt(this.tag('ScoreNumber').text.text)
-    this.tag('ScoreNumber').text.text = current + parseInt(val)
+    if (current > 10000000000) {
+      // you get the max score
+      // maybe I will think to show something or...
+      this.tag('ScoreNumber').text.text = 9999999999 // max score
+    } else {
+      this.tag('ScoreNumber').text.text = current + parseInt(val)
+    }
   }
 }

@@ -375,7 +375,7 @@ export class Board extends Lightning.Component {
         setTimeout(() => {
           this.application.emit('removedChips')
           this._popSound.play()
-          this.application.emmit('Score', 30) // for now everything will be the same
+          this.application.emit('Score', 10) // for now everything will be the same
         }, 50)
 
         element.transition('alpha').on('finish', () => {
