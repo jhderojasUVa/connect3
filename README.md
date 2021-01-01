@@ -14,6 +14,7 @@ There's two different styles:
 Is a working progress, the images show can change over the time:
 
 ![Time limit game](./gitimages/gamelimited.png)
+![Time limit game end](./gitimages/gamelimitedend.png)
 
 This is an example of a game with time limit. You have a time bar that will fill until you connect 3 dots/icons/similar images. Them, some time will be rested.
 
