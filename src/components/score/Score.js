@@ -21,7 +21,7 @@ export class Score extends Lightning.Component {
         y: 30,
         w: 640 - 30,
         text: {
-          text: '1000000000',
+          text: '0',
           fontFace: 'Jura',
           fontSize: 90,
           textColor: Colors.White
