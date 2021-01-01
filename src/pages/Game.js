@@ -5,6 +5,7 @@ import { MusicFiles, FailMusic } from '../utils/Music'
 
 import { MovingBackground } from '../components/movingbackground/MovingBackground'
 import { TimerBar } from '../components/timer/Timer'
+import { Score } from '../components/score/Score'
 import { Board } from '../components/board/Board'
 
 import { GameOverLetters } from '../components/gameover/GameOver'
@@ -19,6 +20,11 @@ export class GamePage extends Lightning.Component {
         x: 80,
         y: 100,
         type: TimerBar,
+      },
+      CurrentScore: {
+        x: 80,
+        y: 300,
+        type: Score
       },
       Board: {
         x: 640,
