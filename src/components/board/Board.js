@@ -294,19 +294,16 @@ export class Board extends Lightning.Component {
   }
 
   checkChipsRow(row = 0) {
-    console.log('CheckChipsRow')
     this.checkChipsCoincidences(row, 0, 'x')
   }
 
   checkChipsColumn(column = 0) {
-    console.log('CheckChipsColumn')
     for (column; column < 12; column++) {
       this.checkChipsCoincidences(column, 0, 'y')
     }
   }
 
   checkBoard() {
-    console.log('checkBoard!')
     this.checkChipsRow()
     this.checkChipsColumn()
     this.clearChips()
@@ -333,7 +330,6 @@ export class Board extends Lightning.Component {
 
   removeRealClearChips() {
     // let fireAgain = false
-    console.log('removeRealClearChips')
     this.tag('Chips').children.forEach(element => {
       if (element.data.realclear == true) {
         element.data.realclear = null
@@ -351,7 +347,6 @@ export class Board extends Lightning.Component {
 
   clearChips() {
     // remove chips that must be removed and update to new ones
-    console.log('ClearCHips')
     // clear real chips
     this.tag('Chips').children.forEach((element, index) => {
       if (element.data.realclear == true) {
