@@ -180,7 +180,7 @@ export class Board extends Lightning.Component {
 
   _handleEnter() {
     // debug mode!
-    console.log(this.tag('Chips').children[this._selectorIndex].data)
+    console.log(this.tag('Chips').children[this._selectorIndex])
     this._selected = this._selected ? false : true
     // Change selector!
     this.changeSelector()
@@ -379,6 +379,7 @@ export class Board extends Lightning.Component {
 
         element.transition('alpha').on('finish', () => {
           this.randomizeChip(element.data.index)
+          this.setAllChipsAlpha(1)
         })
       }
     })
@@ -455,9 +456,17 @@ export class Board extends Lightning.Component {
         x: newChipData.x,
         y: newChipData.y,
       })
-    })
+      this.checkBoard() // check everything
+    }, 500)
 
     this._selected = false // loose the selection!
     this.changeSelector()
+  }
+
+  setAllChipsAlpha(val) {
+    this.tag('Chips').children.forEach((element) => {
+      element.alpha = val
+      element.scale = 1
+    })
   }
 }
