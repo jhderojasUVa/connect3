@@ -6,7 +6,7 @@ export const MusicFiles = [
 
 export const HomeMusic = 'POL-net-bots-short.wav'
 
-export const ScoresMusic = 'Twin Musicom - Green Monday.mp3'
+export const ScoresMusic = 'Twin Musicom - Green Monday.mp3' // http://www.twinmusicom.org/download_file?fileid=65
 
 export const PopSound = 'zapsplat_cartoon_bubble_pop_007_40279.mp3' // https://www.zapsplat.com/sound-effect-category/bubbles/
 
