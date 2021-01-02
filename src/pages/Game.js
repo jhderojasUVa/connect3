@@ -70,7 +70,9 @@ export class GamePage extends Lightning.Component {
   }
 
   _active() {
-    console.log('Board initialized')
+    // stop every sound
+    Howler.stop()
+
     // randomize the music order
     this._musicFiles = this._shuffle(MusicFiles)
     // play!

@@ -8,7 +8,7 @@ export class ButtonText extends Lightning.Component {
                 text: {
                     fontFamily: 'Jura',
                     textColor: Colors.Black,
-                    text: 'asdadasdads',
+                    text: '',
                     textAlign: 'center'
                 }
             }
