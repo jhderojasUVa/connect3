@@ -15,6 +15,19 @@ export class ScoresPage extends Lightning.Component {
       Background: {
         type: MovingBackground
       },
+      HallofFame: {
+        w: 1920,
+        text: {
+          text: 'Hall of fame',
+          fontSize: 90,
+          textColor: 0xFF00cc22,
+          fontFace: 'Indie',
+          textAlign: 'center',
+          shadow: true,
+          shadowBlur: 20,
+          shadowColor: Colors.Yellow
+        }
+      },
       ScoreBoardBase: {
         x: 580,
         y: 140,
