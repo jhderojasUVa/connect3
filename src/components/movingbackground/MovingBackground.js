@@ -15,7 +15,6 @@ export class MovingBackground extends Lightning.Component {
 
   _init() {
     console.log('Background init')
-
   }
 
   _active() {

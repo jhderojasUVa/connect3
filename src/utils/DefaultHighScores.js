@@ -3,7 +3,7 @@ export const DefaultHighScores = () => {
   for (let i = 0; i < 10; i++) { // 10 scores
     scores.push({
       name: 'AAA',
-      score: 1000
+      score: 10000 - i * 1000
     })
   }
 
