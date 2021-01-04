@@ -30,14 +30,6 @@ export class ScoresPage extends Lightning.Component {
           shadowColor: Colors.Yellow,
         },
       },
-      ScoreBoardBase: {
-        x: 580,
-        y: 140,
-        w: 750,
-        h: 800,
-        color: 0x22ffffff,
-        rect: true,
-      },
       ScoreBoard: {
         x: 600,
         y: 150,
@@ -67,6 +59,7 @@ export class ScoresPage extends Lightning.Component {
 
   _setup() {
     this._index = 0 // highscore index //TODO REFACTOR!
+    this._onAddUser = false
     this._music = new Howl({
       src: Utils.asset(`music/${ScoresMusic}`),
       autoplay: true,
@@ -79,11 +72,26 @@ export class ScoresPage extends Lightning.Component {
       Storage.get('highscores') === null
         ? (this._highScores = DefaultHighScores())
         : Storage.get('highscores')
+    // Order it!
+    this._highScores.sort((el1, el2) => {
+      return el2.score - el1.score
+    })
   }
 
   _active() {
     // restart everything
     this._setState('HideKeyboard')
+
+    // check scores
+    this._highScores =
+      Storage.get('highscores') === null
+        ? (this._highScores = DefaultHighScores())
+        : Storage.get('highscores')
+
+    // Order it!
+    this._highScores.sort((el1, el2) => {
+      return el2.score - el1.score
+    })
 
     this.tag('ScoreBoard').items = this._highScores.map((element, index) => {
       const colorName = Colors.Index[Math.floor(Math.random() * Colors.Index.length)]
@@ -113,6 +121,7 @@ export class ScoresPage extends Lightning.Component {
   addNewScore(val, index = 0) {
     this._index = index
     if (val > this._highScores[index].score) {
+      this._onAddUser = true
       this._setState('ShowKeyboard')
     } else {
       if (index + 1 < this._highScores.length) {
@@ -122,10 +131,12 @@ export class ScoresPage extends Lightning.Component {
     this._setState('HideKeyboard')
   }
 
+  insertAt(index, scoreData) {
+    this._highScores.splice(index, 0, scoreData)
+  }
+
   startKeyboard(val) {
-    console.log(val)
-    if (val === true) {
-      console.log('val', val)
+    if (this._onAddUser == true) {
       this.tag('UserKeyboard').patch({
         smooth: {
           alpha: 1,
@@ -133,7 +144,6 @@ export class ScoresPage extends Lightning.Component {
       })
       this.tag('UserName').alpha = 1
     } else {
-      // console.log('adsadasda')
       this.tag('UserKeyboard').patch({
         smooth: {
           alpha: 0,
@@ -154,10 +164,6 @@ export class ScoresPage extends Lightning.Component {
           console.log('Enter keyboard')
           this.startKeyboard(true)
         }
-        _getFocused() {
-          console.log('getfocused enter keyboard')
-          // return this.tag('UserKeyboard')
-        }
       },
       class HideKeyboard extends this {
         $enter() {
@@ -166,9 +172,6 @@ export class ScoresPage extends Lightning.Component {
           this.tag('UserName').text.text = ''
           this.startKeyboard(false)
         }
-        /*_getFocused() {
-          return this
-        }*/
       },
     ]
   }
@@ -179,12 +182,14 @@ export class ScoresPage extends Lightning.Component {
 
     this.tag('UserName').text.text = oldLetters + letter
     if (this.tag('UserName').text.text.length >= 3) {
-      this._highScores[this.index] = {
+      // TODO: refactor this!
+      this.insertAt(this._index + 1, {
         name: this.tag('UserName').text.text,
         score: this._newscore,
-      }
-      // this.startKeyboard()
+      })
+      this._highScores.length = 10
       Storage.set('highscores', this._highScores)
+      this._highScores = Storage.get('highscores')
       Router.navigate('scores')
     }
   }
