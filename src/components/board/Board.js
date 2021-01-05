@@ -114,9 +114,9 @@ export class Board extends Lightning.Component {
         x: (index % 8) * SpaceBetween,
         y: start.y * SpaceBetween,
         data: {
-          index,
-          x: index % 8,
-          y: start.y,
+          //index,
+          //x: index % 8,
+          //y: start.y,
           color: colorName,
         },
         rect: true,
@@ -200,6 +200,9 @@ export class Board extends Lightning.Component {
       x: (index % 8) * SpaceBetween,
       y: index < 8 ? 0 : Math.floor(index / 8) * SpaceBetween,
     })
+    // debug! check what you have below
+    console.log(this.tag('Chips').children[index].data)
+    //this.checkChipsCoincidences()
   }
 
   returnXY(index) {
@@ -244,6 +247,7 @@ export class Board extends Lightning.Component {
     }
 
     if (currentColor == nextColor) {
+      //console.log(`i=${index} ni=${nextIndex} ${nextIndex % 8}`)
       if (nextIndex % 8 != 0) {
         this.markChipAsTmpClear(index)
         this.markChipAsTmpClear(nextIndex)
@@ -379,7 +383,8 @@ export class Board extends Lightning.Component {
         }, 50)
 
         element.transition('alpha').on('finish', () => {
-          this.randomizeChip(element.data.index)
+          //this.randomizeChip(element.data.index)
+          this.randomizeChip(index)
           this.setAllChipsAlpha(1)
         })
       }
@@ -387,6 +392,7 @@ export class Board extends Lightning.Component {
   }
 
   randomizeChip(index) {
+    // Randomize a chip
     const colorName = Colors.Index[Math.floor(Math.random() * Colors.Index.length)]
     const chipColor = Colors[colorName]
     this.tag('Chips').children[index].patch({
@@ -412,14 +418,16 @@ export class Board extends Lightning.Component {
     console.log(oldIndex, newIndex)
     // Remember positions
     const oldChipData = {
+      index: oldIndex,
       data: this.tag('Chips').children[oldIndex].data,
-      texture: this.tag('Chips').children[oldIndex].texture,
+      //texture: this.tag('Chips').children[oldIndex].texture,
       x: this.tag('Chips').children[oldIndex].x,
       y: this.tag('Chips').children[oldIndex].y,
     }
     const newChipData = {
+      index: newIndex,
       data: this.tag('Chips').children[newIndex].data,
-      texture: this.tag('Chips').children[newIndex].texture,
+      //texture: this.tag('Chips').children[newIndex].texture,
       x: this.tag('Chips').children[newIndex].x,
       y: this.tag('Chips').children[newIndex].y,
     }
@@ -447,13 +455,31 @@ export class Board extends Lightning.Component {
       // original positions but new data
       this.tag('Chips').children[oldIndex].patch({
         data: newChipData.data, // swap data
-        texture: newChipData.texture, // swap colors
+        texture: Lightning.Tools.getRoundRect(
+          ChipSize.w,
+          ChipSize.h,
+          40,
+          0,
+          0xffff00ff,
+          true,
+          Colors[newChipData.data.color]
+        ),
+        //texture: newChipData.texture, // swap colors
         x: oldChipData.x,
         y: oldChipData.y,
       })
+      console.log(oldChipData.data)
       this.tag('Chips').children[newIndex].patch({
         data: oldChipData.data,
-        texture: oldChipData.texture,
+        texture: Lightning.Tools.getRoundRect(
+          ChipSize.w,
+          ChipSize.h,
+          40,
+          0,
+          0xffff00ff,
+          true,
+          Colors[oldChipData.data.color]
+        ),
         x: newChipData.x,
         y: newChipData.y,
       })
