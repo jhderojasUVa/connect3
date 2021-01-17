@@ -68,30 +68,14 @@ export class ScoresPage extends Lightning.Component {
   }
 
   _init() {
-    this._highScores =
-      Storage.get('highscores') === null
-        ? (this._highScores = DefaultHighScores())
-        : Storage.get('highscores')
-    // Order it!
-    this._highScores.sort((el1, el2) => {
-      return el2.score - el1.score
-    })
+    this, this._highScoreShorter()
   }
 
   _active() {
     // restart everything
     this._setState('HideKeyboard')
 
-    // check scores
-    this._highScores =
-      Storage.get('highscores') === null
-        ? (this._highScores = DefaultHighScores())
-        : Storage.get('highscores')
-
-    // Order it!
-    this._highScores.sort((el1, el2) => {
-      return el2.score - el1.score
-    })
+    this, this._highScoreShorter()
 
     this.tag('ScoreBoard').items = this._highScores.map((element, index) => {
       const colorName = Colors.Index[Math.floor(Math.random() * Colors.Index.length)]
@@ -107,6 +91,19 @@ export class ScoresPage extends Lightning.Component {
     })
     Howler.stop()
     this._music.play()
+  }
+
+  _highScoreShorter() {
+    // check scores
+    this._highScores =
+      Storage.get('highscores') === null
+        ? (this._highScores = DefaultHighScores())
+        : Storage.get('highscores')
+
+    // Order it!
+    this._highScores.sort((el1, el2) => {
+      return el2.score - el1.score
+    })
   }
 
   _inactive() {
@@ -199,6 +196,7 @@ export class ScoresPage extends Lightning.Component {
   }
 
   _handleBack() {
+    console.log('ENTNTNENTENTENRNERNENRENR')
     Router.navigate('home')
   }
 }

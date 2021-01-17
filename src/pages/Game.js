@@ -54,6 +54,11 @@ export class GamePage extends Lightning.Component {
         }
         $exit() {}
       },
+      class FocusAtScores extends this {
+        _getFocused() {
+          return this.tag('GameOver')
+        }
+      },
     ]
   }
 
@@ -109,7 +114,6 @@ export class GamePage extends Lightning.Component {
   }
 
   _getFocused() {
-    console.log('Game focused')
     return this.tag('Board')
   }
 
