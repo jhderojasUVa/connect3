@@ -14,7 +14,7 @@ export class Score extends Lightning.Component {
           shadow: true,
           shadowColor: 0xffff2222,
           shadowBlur: 3,
-        }
+        },
       },
       ScoreNumber: {
         x: 0,
@@ -24,15 +24,16 @@ export class Score extends Lightning.Component {
           text: '0',
           fontFace: 'Jura',
           fontSize: 90,
-          textColor: Colors.White
-        }
-      }
+          textColor: Colors.White,
+        },
+      },
     }
   }
 
   _init() {
-    this.application.on('Score', (number) => {
+    this.application.on('Score', number => {
       this.scoreNumber(number)
+      this._score = number
     })
   }
 
@@ -45,5 +46,9 @@ export class Score extends Lightning.Component {
     } else {
       this.tag('ScoreNumber').text.text = current + parseInt(val)
     }
+  }
+
+  get score() {
+    return this._score
   }
 }

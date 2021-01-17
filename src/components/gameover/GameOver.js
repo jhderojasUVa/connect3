@@ -1,4 +1,4 @@
-import { Lightning } from '@lightningjs/sdk'
+import { Lightning, Router } from '@lightningjs/sdk'
 
 import { Colors } from '../../utils/Styles'
 
@@ -7,12 +7,16 @@ export class GameOverLetters extends Lightning.Component {
     return {
       y: -1080,
       Background: {
-        x: 0, y: 0, w: 1920, h: 1080,
-        color: 0x99000000, rect: true
+        x: 0,
+        y: 0,
+        w: 1920,
+        h: 1080,
+        color: 0x99000000,
+        rect: true,
       },
       GameOver: {
         w: 1920,
-        y: (1080 / 2) - 150,
+        y: 1080 / 2 - 150,
         text: {
           text: 'Game Over!',
           fontFace: 'Jura',
@@ -24,8 +28,8 @@ export class GameOverLetters extends Lightning.Component {
           shadowOffsetY: 5,
           shadowBlur: 10,
           fontSize: 120,
-        }
-      }
+        },
+      },
     }
   }
 
@@ -39,7 +43,13 @@ export class GameOverLetters extends Lightning.Component {
 
   animation() {
     this.patch({
-      smooth: { y: 0 }
+      smooth: { y: 0 },
+    })
+    // Router.navigate(`scores/${this.tag('CurrentScore').score}`)
+    this.transition('y').on('finish', () => {
+      // Go to the score pages
+      this.fireAncestors('$goToScorePage')
+      // Router.navigate(`scores/${this.tag('CurrentScore').score}`)
     })
   }
 }

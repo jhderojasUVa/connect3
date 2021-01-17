@@ -6,7 +6,7 @@ export default class App extends Router.App {
     return [
       { family: 'Regular', url: Utils.asset('fonts/Roboto-Regular.ttf') },
       { family: 'Indie', url: Utils.asset('fonts/IndieFlower-Regular.ttf') },
-      { family: 'Jura', url: Utils.asset('fonts/Jura-VariableFont_wght.ttf') }
+      { family: 'Jura', url: Utils.asset('fonts/Jura-VariableFont_wght.ttf') },
     ]
   }
 

@@ -5,6 +5,9 @@
     "@lightningjs/sdk": "^3.2.1",
     "lightning-ui-components": "git+https://github.com/rdkcentral/Lightning-UI-Components.git"
   },
+  "scripts": {
+    "lint": "eslint --fix ./src/*.js ./src/**/*.js"
+  },
   "lint-staged": {
     "*.js": [
       "eslint --fix",
