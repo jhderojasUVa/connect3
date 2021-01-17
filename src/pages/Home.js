@@ -142,7 +142,6 @@ export class HomePage extends Lightning.Component {
   }
 
   _getFocused() {
-    console.log('Home')
     return this.tag('GameMenu')
   }
 

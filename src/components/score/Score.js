@@ -33,19 +33,22 @@ export class Score extends Lightning.Component {
   _init() {
     this.application.on('Score', number => {
       this.scoreNumber(number)
-      this._score = number
     })
   }
 
   scoreNumber(val) {
     const current = parseInt(this.tag('ScoreNumber').text.text)
+    let newScore
     if (current > 10000000000) {
       // you get the max score
       // maybe I will think to show something or...
-      this.tag('ScoreNumber').text.text = 9999999999 // max score
+      newScore = 9999999999
     } else {
-      this.tag('ScoreNumber').text.text = current + parseInt(val)
+      newScore = current + parseInt(val)
     }
+
+    this.tag('ScoreNumber').text.text = newScore
+    this._score = newScore
   }
 
   get score() {
