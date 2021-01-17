@@ -197,4 +197,8 @@ export class ScoresPage extends Lightning.Component {
   _getFocused() {
     return this.tag('UserKeyboard')
   }
+
+  _handleBack() {
+    Router.navigate('home')
+  }
 }

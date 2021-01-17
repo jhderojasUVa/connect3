@@ -1,4 +1,5 @@
-import { Lightning, Utils } from '@lightningjs/sdk'
+import { Lightning, Router, Utils } from '@lightningjs/sdk'
+import { Howl, Howler } from 'howler'
 
 import { Colors } from '../utils/Styles'
 import { MusicFiles, FailMusic } from '../utils/Music'
@@ -14,7 +15,7 @@ export class GamePage extends Lightning.Component {
   static _template() {
     return {
       Background: {
-        type: MovingBackground
+        type: MovingBackground,
       },
       Timer: {
         x: 80,
@@ -24,16 +25,16 @@ export class GamePage extends Lightning.Component {
       CurrentScore: {
         x: 80,
         y: 300,
-        type: Score
+        type: Score,
       },
       Board: {
         x: 640,
         y: 50,
-        type: Board
+        type: Board,
       },
       GameOver: {
-        type: GameOverLetters
-      }
+        type: GameOverLetters,
+      },
     }
   }
 
@@ -44,19 +45,15 @@ export class GamePage extends Lightning.Component {
           this.tag('Timer').visible = true
           this.tag('GameOver').visible = true
         }
-        $exit() {
-
-        }
+        $exit() {}
       },
       class NoTime extends this {
         $enter() {
           this.tag('Timer').visible = false
           this.tag('GameOver').visible = false
         }
-        $exit() {
-
-        }
-      }
+        $exit() {}
+      },
     ]
   }
 
@@ -66,7 +63,6 @@ export class GamePage extends Lightning.Component {
       autoplay: false,
       loop: false,
     })
-
   }
 
   _active() {
@@ -81,22 +77,23 @@ export class GamePage extends Lightning.Component {
 
   _shuffle(array) {
     // shuffle the array!
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    var currentIndex = array.length,
+      temporaryValue,
+      randomIndex
 
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
-
       // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
 
       // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
     }
 
-    return array;
+    return array
   }
 
   _playMusic() {
@@ -112,6 +109,7 @@ export class GamePage extends Lightning.Component {
   }
 
   _getFocused() {
+    console.log('Game focused')
     return this.tag('Board')
   }
 
@@ -119,6 +117,13 @@ export class GamePage extends Lightning.Component {
     this._music.stop()
     this._failMusic.play()
     this.tag('GameOver').animationStart = true
+  }
+
+  $goToScorePage() {
+    // go to score page after 2 seconds
+    setTimeout(() => {
+      Router.navigate(`scores/${this.tag('CurrentScore').score}`)
+    }, 2000)
   }
 
   set tipeOfGame(val) {

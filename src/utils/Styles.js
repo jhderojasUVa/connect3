@@ -1,14 +1,14 @@
 // constants used by the game
 
 export const Colors = {
-    Index: ['Green', 'Red', 'Blue', 'White'],
-    Green: 0xFF00cc22,
-    White: 0xFFeeeeee,
-    Black: 0xFF111111,
-    Gray: 0xFFcccccc,
-    Red: 0xFFcc0000,
-    Blue: 0xFF0022cc,
-    Yellow: 0xFFffcc00,
+  Index: ['Green', 'Red', 'Blue', 'White'],
+  Green: 0xff00cc22,
+  White: 0xffeeeeee,
+  Black: 0xff111111,
+  Gray: 0xffcccccc,
+  Red: 0xffcc0000,
+  Blue: 0xff0022cc,
+  Yellow: 0xffffcc00,
 }
 
 export const SpaceBetween = 80

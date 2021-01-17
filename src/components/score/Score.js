@@ -14,7 +14,7 @@ export class Score extends Lightning.Component {
           shadow: true,
           shadowColor: 0xffff2222,
           shadowBlur: 3,
-        }
+        },
       },
       ScoreNumber: {
         x: 0,
@@ -24,26 +24,34 @@ export class Score extends Lightning.Component {
           text: '0',
           fontFace: 'Jura',
           fontSize: 90,
-          textColor: Colors.White
-        }
-      }
+          textColor: Colors.White,
+        },
+      },
     }
   }
 
   _init() {
-    this.application.on('Score', (number) => {
+    this.application.on('Score', number => {
       this.scoreNumber(number)
     })
   }
 
   scoreNumber(val) {
     const current = parseInt(this.tag('ScoreNumber').text.text)
+    let newScore
     if (current > 10000000000) {
       // you get the max score
       // maybe I will think to show something or...
-      this.tag('ScoreNumber').text.text = 9999999999 // max score
+      newScore = 9999999999
     } else {
-      this.tag('ScoreNumber').text.text = current + parseInt(val)
+      newScore = current + parseInt(val)
     }
+
+    this.tag('ScoreNumber').text.text = newScore
+    this._score = newScore
+  }
+
+  get score() {
+    return this._score
   }
 }
