@@ -26,20 +26,6 @@ export class HomePage extends Lightning.Component {
         y: 150,
         data: 'Connect3',
         type: FallingLetters,
-        /*
-        w: 400,
-        h: 200,
-        rotation: -Math.PI / 7,
-        x: 500,
-        y: 150,
-        text: {
-          fontSize: 130,
-          textColor: 0xff00cc22,
-          fontFace: 'Indie',
-          text: 'Connect3!',
-          textAlign: 'center',
-        },
-        */
       },
       GameMenu: {
         x: 1920 / 2 - 200,
@@ -104,7 +90,7 @@ export class HomePage extends Lightning.Component {
         title: 'Play! (Time based)',
         size: {
           w: 700,
-          h: 50,
+          h: 90,
         },
         action: 'play',
       },
@@ -113,7 +99,7 @@ export class HomePage extends Lightning.Component {
         title: 'Play Unlimited! (No time based)',
         size: {
           w: 700,
-          h: 50,
+          h: 90,
         },
         action: 'play_unlimited',
       },
@@ -122,7 +108,7 @@ export class HomePage extends Lightning.Component {
         title: 'Exit',
         size: {
           w: 500,
-          h: 50,
+          h: 90,
         },
         action: 'exit',
       },
