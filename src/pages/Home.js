@@ -6,6 +6,7 @@ import { BackgroundHome } from '../utils/Styles'
 
 import { Column } from 'lightning-ui-components'
 
+import { FallingLetters } from '../components/fallingletters/FallingLetters'
 import { ButtonText } from '../components/text/Buttons'
 
 export class HomePage extends Lightning.Component {
@@ -21,18 +22,10 @@ export class HomePage extends Lightning.Component {
         src: Utils.asset(`images/backgrounds/${BackgroundHome}`),
       },
       Title: {
-        w: 400,
-        h: 200,
-        rotation: -Math.PI / 7,
         x: 500,
         y: 150,
-        text: {
-          fontSize: 130,
-          textColor: 0xff00cc22,
-          fontFace: 'Indie',
-          text: 'Connect3!',
-          textAlign: 'center',
-        },
+        data: 'Connect3',
+        type: FallingLetters,
       },
       GameMenu: {
         x: 1920 / 2 - 200,
@@ -97,16 +90,16 @@ export class HomePage extends Lightning.Component {
         title: 'Play! (Time based)',
         size: {
           w: 700,
-          h: 50,
+          h: 90,
         },
         action: 'play',
       },
       {
         type: ButtonText,
-        title: 'Play Unlimited! (Time based)',
+        title: 'Play Unlimited! (No time based)',
         size: {
           w: 700,
-          h: 50,
+          h: 90,
         },
         action: 'play_unlimited',
       },
@@ -115,7 +108,7 @@ export class HomePage extends Lightning.Component {
         title: 'Exit',
         size: {
           w: 500,
-          h: 50,
+          h: 90,
         },
         action: 'exit',
       },
