@@ -1,5 +1,7 @@
 import { Lightning } from '@lightningjs/sdk'
 
+import { Colors } from '../../utils/Styles'
+
 export class FallingLetters extends Lightning.Component {
   static _template() {
     return {
@@ -31,6 +33,8 @@ export class FallingLetters extends Lightning.Component {
     this.tag('Letters').children = tmparray.map(letter => {
       return {
         alpha: 0,
+        colorTop: Colors.Green,
+        colorBottom: Colors.Yellow,
         text: {
           text: letter,
           fontStyle: 'bold',
@@ -77,7 +81,7 @@ export class FallingLetters extends Lightning.Component {
       })
 
       const foreverAnimation = letter.animation({
-        duration: 10,
+        duration: 5,
         repeat: -1,
         actions: [
           {
@@ -86,6 +90,23 @@ export class FallingLetters extends Lightning.Component {
               0: scaleFinishRandom + 0.7,
               0.5: scaleFinishRandom - 0.2,
               1: scaleFinishRandom + 0.7,
+            },
+          },
+          {
+            p: 'colorTop',
+            v: {
+              0: Colors.Green,
+              0.5: Colors.Yellow,
+              1: Colors.Green,
+            },
+          },
+          {
+            p: 'colorBottom',
+            v: {
+              0: Colors.Yellow,
+              0.3: Colors.Red,
+              0.6: Colors.Blue,
+              1: Colors.Yellow,
             },
           },
         ],
