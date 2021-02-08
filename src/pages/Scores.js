@@ -196,7 +196,7 @@ export class ScoresPage extends Lightning.Component {
   }
 
   _handleBack() {
-    console.log('ENTNTNENTENTENRNERNENRENR')
+    // return home!
     Router.navigate('home')
   }
 }
