@@ -127,7 +127,7 @@ export class GamePage extends Lightning.Component {
     // go to score page after 2 seconds
     setTimeout(() => {
       Router.navigate(`scores/${this.tag('CurrentScore').score}`)
-    }, 2000)
+    }, 4000)
   }
 
   set tipeOfGame(val) {
