@@ -7,6 +7,9 @@ export default {
   boot: () => {
     return new Promise(resolve => {
       // tmp!
+      // On the future with this we can get fetch some data from
+      // the server, like the scores or some data needed for the multi
+      // player...
       resolve()
     })
   },
