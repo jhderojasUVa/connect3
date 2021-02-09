@@ -1,10 +1,22 @@
 export const MusicFiles = [
-  'Twin Musicom - Lightning on a Blue Sky.mp3', // http://www.twinmusicom.org/download_file?fileid=104
-  'Twin Musicom - Arabian Bizaar.mp3', // http://www.twinmusicom.org/download_file?fileid=209
-  'Twin Musicom - Old Bossa.mp3', // http://www.twinmusicom.org/download_file?fileid=139
+  {
+    src: 'Twin Musicom - Lightning on a Blue Sky.mp3', // http://www.twinmusicom.org/download_file?fileid=104
+    name: 'Music:\r\nLightning on a Blue Sky by Twin Musicom',
+  },
+  {
+    src: 'Twin Musicom - Arabian Bizaar.mp3', // http://www.twinmusicom.org/download_file?fileid=209
+    name: 'Music:\r\nArabian Bizaar by Twin Musicom',
+  },
+  {
+    src: 'Twin Musicom - Old Bossa.mp3', // http://www.twinmusicom.org/download_file?fileid=139
+    name: 'Music:\r\nOld Bossa by Twin Musicom',
+  },
 ]
 
-export const HomeMusic = 'POL-net-bots-short.wav'
+export const HomeMusic = {
+  src: 'POL-net-bots-short.wav',
+  name: 'Intro: Net bots\r\nZapSplat.com',
+}
 
 export const ScoresMusic = 'Twin Musicom - Green Monday.mp3' // http://www.twinmusicom.org/download_file?fileid=65
 
