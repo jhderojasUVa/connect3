@@ -9,6 +9,7 @@ import { TimerBar } from '../components/timer/Timer'
 import { Score } from '../components/score/Score'
 import { Board } from '../components/board/Board'
 
+import { Toast } from '../components/toast/Toast'
 import { GameOverLetters } from '../components/gameover/GameOver'
 
 export class GamePage extends Lightning.Component {
@@ -34,6 +35,11 @@ export class GamePage extends Lightning.Component {
       },
       GameOver: {
         type: GameOverLetters,
+      },
+      Toast: {
+        x: 50,
+        y: 1080 - 200,
+        type: Toast,
       },
     }
   }
@@ -103,12 +109,17 @@ export class GamePage extends Lightning.Component {
 
   _playMusic() {
     // put the music on!
+    let musicName
     this._music = new Howl({
       src: this._musicFiles.map(item => {
-        return Utils.asset(`music/${item}`)
+        musicName = item.name
+        return Utils.asset(`music/${item.src}`)
       }),
       autoplay: true,
       loop: true,
+      onplay: () => {
+        this.tag('Toast').data = musicName
+      },
     })
     this._music.play()
   }

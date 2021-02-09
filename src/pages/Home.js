@@ -8,6 +8,7 @@ import { Column } from 'lightning-ui-components'
 
 import { FallingLetters } from '../components/fallingletters/FallingLetters'
 import { ButtonText } from '../components/text/Buttons'
+import { Toast } from '../components/toast/Toast'
 
 export class HomePage extends Lightning.Component {
   static _template() {
@@ -31,6 +32,11 @@ export class HomePage extends Lightning.Component {
         x: 1920 / 2 - 200,
         y: 1080 / 2,
         type: Column,
+      },
+      Toast: {
+        x: 50,
+        y: 1080 - 200,
+        type: Toast,
       },
     }
   }
@@ -75,13 +81,17 @@ export class HomePage extends Lightning.Component {
   _active() {
     // stop everysound!
     Howler.stop()
+    console.log(HomeMusic.src)
     // load soundtrack
     this._music = new Howl({
-      src: [Utils.asset(`music/${HomeMusic}`)], // https://www.playonloop.com/freebies-download/
+      src: [Utils.asset(`music/${HomeMusic.src}`)], // https://www.playonloop.com/freebies-download/
       autoplay: true,
       loop: true,
     })
     this._music.play()
+
+    // music toast!
+    this.tag('Toast').data = HomeMusic.name
 
     // Menu items
     this._menu.items = [
