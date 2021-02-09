@@ -81,7 +81,6 @@ export class HomePage extends Lightning.Component {
   _active() {
     // stop everysound!
     Howler.stop()
-    console.log(HomeMusic.src)
     // load soundtrack
     this._music = new Howl({
       src: [Utils.asset(`music/${HomeMusic.src}`)], // https://www.playonloop.com/freebies-download/
