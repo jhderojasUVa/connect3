@@ -2,7 +2,7 @@
   "name": "com.jhderojasuva.connect3",
   "description": "Connect3",
   "dependencies": {
-    "@lightningjs/sdk": "^3.2.1",
+    "@lightningjs/sdk": "^4.1.0",
     "lightning-ui-components": "git+https://github.com/rdkcentral/Lightning-UI-Components.git"
   },
   "scripts": {
