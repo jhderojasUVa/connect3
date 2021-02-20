@@ -81,14 +81,16 @@ export class FallingLetters extends Lightning.Component {
       })
 
       const foreverAnimation = letter.animation({
-        duration: 5,
+        duration: 3,
         repeat: -1,
         actions: [
           {
             p: 'scale',
             v: {
               0: scaleFinishRandom + 0.7,
-              0.5: scaleFinishRandom - 0.2,
+              0.25: scaleFinishRandom + 1,
+              0.5: scaleFinishRandom + 0.9,
+              0.75: scaleFinishRandom + 0.5,
               1: scaleFinishRandom + 0.7,
             },
           },
