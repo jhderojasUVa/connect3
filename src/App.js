@@ -1,5 +1,6 @@
-import { Lightning, Utils, Router } from '@lightningjs/sdk'
+import { Utils, Router } from '@lightningjs/sdk'
 import routes from './routes'
+import { Howl, Howler } from 'howler'
 
 export default class App extends Router.App {
   static getFonts() {
@@ -12,5 +13,9 @@ export default class App extends Router.App {
 
   _setup() {
     Router.startRouter(routes)
+  }
+
+  _init() {
+    Howler.autoUnlock = false
   }
 }

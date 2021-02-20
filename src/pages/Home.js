@@ -114,6 +114,15 @@ export class HomePage extends Lightning.Component {
       },
       {
         type: ButtonText,
+        title: 'How to play',
+        size: {
+          w: 700,
+          h: 90,
+        },
+        action: 'how_to_play',
+      },
+      {
+        type: ButtonText,
         title: 'Exit',
         size: {
           w: 500,
@@ -133,6 +142,10 @@ export class HomePage extends Lightning.Component {
       case 'play_unlimited':
         this._music.stop()
         Router.navigate('game/unlimited')
+        break
+      case 'how_to_play':
+        this._music.stop()
+        Router.navigate('instructions')
         break
       case 'exit':
         this._music.stop()
