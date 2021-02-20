@@ -2,6 +2,7 @@ import { LoadingPage } from './pages/Loading'
 import { HomePage } from './pages/Home'
 import { GamePage } from './pages/Game'
 import { ScoresPage } from './pages/Scores'
+import { InstructionsPage } from './pages/Instructions'
 
 export default {
   boot: () => {
@@ -59,6 +60,10 @@ export default {
         })
       },
       component: ScoresPage,
+    },
+    {
+      path: 'instructions',
+      component: InstructionsPage,
     },
     {
       path: '*',

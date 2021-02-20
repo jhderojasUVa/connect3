@@ -24,3 +24,5 @@ export const GameBackgrounds = [
   'images/backgrounds/game_background2.jpg',
   'images/backgrounds/game_background3.jpg',
 ]
+
+export const InstructionBackground = 'images/backgrounds/instructions_background.jpg'
