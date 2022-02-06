@@ -2,7 +2,7 @@
   "name": "com.jhderojasuva.connect3",
   "description": "Connect3",
   "dependencies": {
-    "@lightningjs/sdk": "4.6.1",
+    "@lightningjs/sdk": "^4.8.1",
     "howler": "^2.2.1",
     "@lightningjs/ui-components": "^1.2.1"
   },
