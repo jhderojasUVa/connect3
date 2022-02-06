@@ -1,6 +1,6 @@
 import { Lightning, Storage, Utils, Router } from '@lightningjs/sdk'
 import { Howl, Howler } from 'howler'
-import { Column } from 'lightning-ui-components'
+import { Column } from '@lightningjs/ui-components'
 
 import { DefaultHighScores } from '../utils/DefaultHighScores'
 import { ScoresMusic } from '../utils/Music'

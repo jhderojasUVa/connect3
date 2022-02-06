@@ -1,5 +1,5 @@
 import { Lightning } from '@lightningjs/sdk'
-import { Row } from 'lightning-ui-components'
+import { Row } from '@lightningjs/ui-components'
 
 import { Colors } from '../../utils/Styles'
 import { LETTERS } from '../../utils/Lang'

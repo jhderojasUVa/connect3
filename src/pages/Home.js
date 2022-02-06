@@ -4,7 +4,7 @@ import { Howl, Howler } from 'howler'
 import { HomeMusic } from '../utils/Music'
 import { BackgroundHome } from '../utils/Styles'
 
-import { Column } from 'lightning-ui-components'
+import { Column } from '@lightningjs/ui-components'
 
 import { FallingLetters } from '../components/fallingletters/FallingLetters'
 import { ButtonText } from '../components/text/Buttons'
