@@ -3,11 +3,14 @@
   "description": "Connect3",
   "dependencies": {
     "@lightningjs/sdk": "^4.8.1",
-    "howler": "^2.2.1",
-    "@lightningjs/ui-components": "^1.2.1"
+    "@lightningjs/ui-components": "^1.2.1",
+    "eslint-staged": "^1.0.1",
+    "howler": "^2.2.1"
   },
   "scripts": {
-    "lint": "eslint --fix ./src/*.js ./src/**/*.js"
+    "lint-staged": "lint-staged",
+    "lint": "eslint --fix ./src/*.js ./src/**/*.js",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.js": [
@@ -26,7 +29,7 @@
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "husky": "^3.1.0",
+    "husky": "^7.0.0",
     "lint-staged": "^9.4.3",
     "prettier": "^1.19.1"
   }
